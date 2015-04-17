@@ -1,0 +1,16 @@
+{
+  "name": "rspec-tree-runner",
+  "main": "./lib/rspec-tree-runner",
+  "version": "0.0.0",
+  "description": "A short description of your package",
+  "activationCommands": {
+    "atom-workspace": "rspec-tree-runner:toggle"
+  },
+  "repository": "https://github.com/atom/rspec-tree-runner",
+  "license": "MIT",
+  "engines": {
+    "atom": ">=0.174.0 <2.0.0"
+  },
+  "dependencies": {
+  }
+}
