@@ -10,17 +10,23 @@ specAppPathsReg = (paths) ->
   new RegExp("^\/(#{paths.join('|')})\/", 'i')
 
 module.exports =
-class RailsRspecFinder
+class RailsRSpecFinder
   constructor: (@root, @specPaths, @specDefault, @fs) ->
 
   toggleSpecFile: (file) ->
-    relativePath = file.substring(@root.length)
+    relativePath = @getFileWithoutProjectRoot(file)
     return null unless relativePath.match supportedPathsReg(@specPaths)
 
-    if relativePath.match /_spec\.rb$/
+    if @isSpec(relativePath)
       @getRubyFile relativePath
     else
       @findSpecFile relativePath
+
+  getFileWithoutProjectRoot: (file) ->
+    file.substring(@root.length)
+
+  isSpec: (relativePath) ->
+    relativePath.match /_spec\.rb$/
 
   getRubyFile: (path) ->
     if path.match /^\/spec\/views/i
@@ -31,10 +37,13 @@ class RailsRspecFinder
     path = path.replace specAppPathsReg(@specPaths), '/app/'
     Path.join @root, path
 
+  fileExists: (file) ->
+    @fs.existsSync file
+
   findSpecFile: (path) ->
     for specPath in @specPaths
       file = @getSpecFile path, specPath
-      return file if @fs.existsSync file
+      return file if @fileExists file
     @getSpecFile path, @specDefault
 
   getSpecFile: (path, specPath) ->

@@ -13,18 +13,15 @@ module.exports =
       default: 'spec'
 
   rspecTreeRunnerView: null
-  modalPanel: null
+  mainView: null
   subscriptions: null
 
   activate: (state) ->
-    @rspecTreeRunnerView = new RspecTreeRunnerView(state.rspecTreeRunnerViewState)
-    @modalPanel = atom.workspace.addModalPanel(item: @rspecTreeRunnerView.getElement(), visible: false)
-
-    # Events subscribed to in atom's system can be easily cleaned up with a CompositeDisposable
+    @mainView = @getView()
     @subscriptions = new CompositeDisposable
-
-    # Register command that toggles this view
-    @subscriptions.add atom.commands.add 'atom-workspace', 'rspec-tree-runner:toggle': => @toggle()
+    @subscriptions.add atom.commands.add 'atom-workspace', 'rspec-tree-runner:toggle': => @mainView.toggle()
+    @subscriptions.add atom.commands.add 'atom-workspace', 'rspec-tree-runner:toggle-spec-file': => @mainView.toggleSpecFile()
+    @subscriptions.add atom.commands.add 'atom-workspace', 'rspec-tree-runner:create-spec-file': => @mainView.createSpecFile()
 
   deactivate: ->
     @modalPanel.destroy()
@@ -34,10 +31,9 @@ module.exports =
   serialize: ->
     rspecTreeRunnerViewState: @rspecTreeRunnerView.serialize()
 
-  toggle: ->
-    console.log 'RspecTreeRunner was toggled!'
-
-    if @modalPanel.isVisible()
-      @modalPanel.hide()
-    else
-      @modalPanel.show()
+  getView: ->
+    unless @view
+      RSpecTreeView = require './rspec-tree-view'
+      @view = new RSpecTreeView()
+      @view.attach()
+    @view
