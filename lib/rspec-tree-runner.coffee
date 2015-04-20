@@ -18,10 +18,15 @@ module.exports =
 
   activate: (state) ->
     @mainView = @getView()
+
     @subscriptions = new CompositeDisposable
+    @subscriptions.add atom.commands.add 'atom-text-editor', 'buffer:saved': =>
+      editor = atom.workspace.getActiveTextEditor()
+      @mainView.handleEditorEvents(editor)
+
     @subscriptions.add atom.commands.add 'atom-workspace', 'rspec-tree-runner:toggle': => @mainView.toggle()
+
     @subscriptions.add atom.commands.add 'atom-workspace', 'rspec-tree-runner:toggle-spec-file': => @mainView.toggleSpecFile()
-    @subscriptions.add atom.commands.add 'atom-workspace', 'rspec-tree-runner:create-spec-file': => @mainView.createSpecFile()
 
   deactivate: ->
     @modalPanel.destroy()

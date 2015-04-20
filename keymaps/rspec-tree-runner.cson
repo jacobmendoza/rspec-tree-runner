@@ -10,4 +10,3 @@
 'atom-workspace':
   'ctrl-alt-l': 'rspec-tree-runner:toggle'
   'ctrl-alt-q': 'rspec-tree-runner:toggle-spec-file'
-  'ctrl-alt-c': 'rspec-tree-runner:create-spec-file'

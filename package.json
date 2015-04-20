@@ -4,7 +4,8 @@
   "version": "0.0.0",
   "description": "A short description of your package",
   "activationCommands": {
-    "atom-workspace": "rspec-tree-runner:toggle"
+    "atom-workspace": "rspec-tree-runner:toggle",
+    "atom-text-editor": "buffer:saved"
   },
   "repository": "https://github.com/atom/rspec-tree-runner",
   "license": "MIT",
