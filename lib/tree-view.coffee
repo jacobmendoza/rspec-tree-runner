@@ -64,8 +64,8 @@ module.exports =
 
   TreeView: class TreeView extends ScrollView
     @content: ->
-      @div class: '-tree-view-', =>
-        @h3 class: 'h3-plugin', ''
+      @div class: 'rspec-tree-runner-tree-view', =>
+        @h3 class: 'tree-view-title', ''
         @ul class: 'list-tree has-collapsable-children', outlet: 'root'
 
     initialize: ->
@@ -74,7 +74,7 @@ module.exports =
       @emitter = new Emitter
 
     changeFile: (title) ->
-      this.find('.h3-plugin').html(title)
+      this.find('.tree-view-title').html(title)
 
     deactivate: ->
       @remove()

@@ -1,8 +1,11 @@
 {Disposable, CompositeDisposable} = require 'atom'
 {View, $$} = require 'atom-space-pen-views'
+
+{TreeView} = require './tree-view'
 RailsRSpecFinder = require './rails-rspec-finder'
 PluginState = require './plugin-state'
-# fs = require 'fs'
+TerminalCommandRunner = require './terminal-command-runner'
+RSpecAnalyzerCommand = require './rspec-analyzer-command'
 
 module.exports =
 class RSpecTreeView extends View
@@ -14,17 +17,32 @@ class RSpecTreeView extends View
         @div class: 'file-to-analyze'
 
   initialize: ->
+    terminalCommandRunner = new TerminalCommandRunner()
+    rspecAnalyzerCommand = new RSpecAnalyzerCommand(terminalCommandRunner)
+
     railsRSpecFinder = new RailsRSpecFinder(
       atom.project.getPaths()[0],
       atom.config.get('rspec-tree-runner.specSearchPaths'),
       atom.config.get('rspec-tree-runner.specDefaultPath'),
       fs)
 
-    @currentState = new PluginState(railsRSpecFinder)
+    @currentState = new PluginState(railsRSpecFinder, rspecAnalyzerCommand)
+
+    @currentState.onTreeBuilt (asTree) => @redrawTree(asTree)
 
     @setCurrentAndCorrespondingFile(atom.workspace.getActiveTextEditor())
 
+    @treeView = new TreeView
+
+    @append(@treeView)
+
     @disposables = new CompositeDisposable
+
+  redrawTree: (asTree) ->
+    children = asTree || {}
+    @treeView.setRoot({ label: 'root', children: children }) if @treeView?
+    fileName = if children.length > 0 then @currentState.currentFileName else ''
+    @treeView.changeFile(fileName)
 
   setCurrentAndCorrespondingFile: (editor) ->
     @currentState.set(editor)
@@ -32,6 +50,7 @@ class RSpecTreeView extends View
     if @currentState.specFileExists
       this.find('.spec-does-not-exist').hide()
     else
+      @redrawTree({})
       this.find('.spec-does-not-exist').show()
       this.find('.file-to-analyze').html(@currentState.specFileToAnalyze)
 
@@ -60,3 +79,10 @@ class RSpecTreeView extends View
 
     @disposables.add atom.workspace.onDidChangeActivePaneItem (editor) =>
       @handleEditorEvents(editor)
+
+  detach: ->
+    @disposables.dispose()
+    @editorHandlers?.dispose()
+
+  destroy: ->
+    @detach()
