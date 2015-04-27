@@ -9,17 +9,16 @@ describe 'PluginState', ->
 
   beforeEach ->
     emitter = {}
-    
+
     rspecAnalyzerCommand = {
       run: (file) -> true
       onDataParsed: (asTree) -> []
     }
+    
+    atom.config.set('rspec-tree-runner.specDefaultPath', 'spec')
+    atom.config.set('rspec-tree-runner.specSearchPaths', ['spec', 'fast_spec'])
 
-    railsRSpecFinder = new RailsRSpecFinder(
-      rootFolder,
-      defaultSpecFolders,
-      'spec',
-      fs)
+    railsRSpecFinder = new RailsRSpecFinder(rootFolder, fs)
 
     state = new PluginState(
       emitter, railsRSpecFinder, rspecAnalyzerCommand)

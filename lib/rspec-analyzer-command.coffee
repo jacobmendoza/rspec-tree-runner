@@ -1,17 +1,18 @@
 TerminalCommandRunner = require './terminal-command-runner'
 AstParser = require './ast-parser'
 {Emitter} = require 'event-kit'
+path = require 'path'
 
 module.exports =
   class RSpecAnalyzerCommand
     constructor: (
-      emitter = new Emitter,
-      terminalCommandRunner = new TerminalCommandRunner,
-      astParser = new AstParser
-      path = path)  ->
+    emitter = new Emitter,
+    terminalCommandRunner = new TerminalCommandRunner,
+    astParser = new AstParser
+    systemPath = path)  ->
       @emitter = emitter
       @terminalCommandRunner = terminalCommandRunner
-      @path = path
+      @path = systemPath
       @astParser = astParser
 
     run: (file) ->

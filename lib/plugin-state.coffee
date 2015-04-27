@@ -1,12 +1,13 @@
 RailsRSpecFinder = require './rails-rspec-finder'
+RSpecAnalyzerCommand = require './rspec-analyzer-command'
 {Emitter} = require 'event-kit'
 
 module.exports =
 class PluginState
   constructor: (
-    emitter = new Emitter,
-    railsRSpecFinder = new RailsRSpecFinder,
-    rspecAnalyzerCommand = new RSpecAnalyzerCommand) ->
+  emitter = new Emitter,
+  railsRSpecFinder = new RailsRSpecFinder,
+  rspecAnalyzerCommand = new RSpecAnalyzerCommand) ->
     @emitter = emitter
     @railsRSpecFinder = railsRSpecFinder
     @rspecAnalyzerCommand = rspecAnalyzerCommand

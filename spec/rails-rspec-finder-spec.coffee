@@ -2,12 +2,18 @@ Path = require 'path'
 RailsRspecFinder = require '../lib/rails-rspec-finder'
 
 describe 'RailsRspecFinder', ->
+  [finder, rootFolder, finder] = []
 
-  defaultSpecFolders = ['spec', 'fast_spec']
   rootFolder = '/Users/X/Repo/project-folder'
+
   existsSyncSpy = jasmine.createSpy('spy')
-  fs = { existsSync: existsSyncSpy }
-  finder = new RailsRspecFinder(rootFolder, defaultSpecFolders, 'spec', fs)
+
+  beforeEach ->
+    atom.config.set('rspec-tree-runner.specSearchPaths', ['spec', 'fast_spec'])
+
+    atom.config.set('rspec-tree-runner.specDefaultPath', 'spec')
+
+    finder = new RailsRspecFinder(rootFolder, { existsSync: existsSyncSpy })
 
   describe 'toggleSpecFile', ->
     describe 'when supplying spec files', ->

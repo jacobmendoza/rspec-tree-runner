@@ -2,10 +2,7 @@
 {View, $$} = require 'atom-space-pen-views'
 
 {TreeView} = require './tree-view'
-RailsRSpecFinder = require './rails-rspec-finder'
 PluginState = require './plugin-state'
-TerminalCommandRunner = require './terminal-command-runner'
-RSpecAnalyzerCommand = require './rspec-analyzer-command'
 
 module.exports =
 class RSpecTreeView extends View
@@ -16,17 +13,8 @@ class RSpecTreeView extends View
         @h3 'Press ctrl-alt-q to create a new one'
         @div class: 'file-to-analyze'
 
-  initialize: ->
-    terminalCommandRunner = new TerminalCommandRunner()
-    rspecAnalyzerCommand = new RSpecAnalyzerCommand(terminalCommandRunner)
-
-    railsRSpecFinder = new RailsRSpecFinder(
-      atom.project.getPaths()[0],
-      atom.config.get('rspec-tree-runner.specSearchPaths'),
-      atom.config.get('rspec-tree-runner.specDefaultPath'),
-      fs)
-
-    @currentState = new PluginState(railsRSpecFinder, rspecAnalyzerCommand)
+  initialize:  ->
+    @currentState = new PluginState
 
     @currentState.onTreeBuilt (asTree) => @redrawTree(asTree)
 

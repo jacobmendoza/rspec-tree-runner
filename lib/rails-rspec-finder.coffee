@@ -11,7 +11,10 @@ specAppPathsReg = (paths) ->
 
 module.exports =
 class RailsRSpecFinder
-  constructor: (@root, @specPaths, @specDefault, @fs) ->
+  constructor: (@root = atom.project.getPaths()[0], fileSystem = fs) ->
+    @fs = fileSystem
+    @specPaths = atom.config.get('rspec-tree-runner.specSearchPaths')
+    @specDefault = atom.config.get('rspec-tree-runner.specDefaultPath')
 
   toggleSpecFile: (file) ->
     relativePath = @getFileWithoutProjectRoot(file)
