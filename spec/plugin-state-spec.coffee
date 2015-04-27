@@ -2,18 +2,27 @@ PluginState = require '../lib/plugin-state'
 RailsRSpecFinder = require '../lib/rails-rspec-finder'
 
 describe 'PluginState', ->
-
+  [railsRSpecFinder, state] = []
   defaultSpecFolders = ['spec', 'fast_spec']
   rootFolder = '/Users/X/Repo/project-folder'
   fs = { existsSync: -> true }
 
-  railsRSpecFinder = new RailsRSpecFinder(
-    rootFolder,
-    defaultSpecFolders,
-    'spec',
-    fs)
+  beforeEach ->
+    emitter = {}
+    
+    rspecAnalyzerCommand = {
+      run: (file) -> true
+      onDataParsed: (asTree) -> []
+    }
 
-  state = new PluginState(railsRSpecFinder)
+    railsRSpecFinder = new RailsRSpecFinder(
+      rootFolder,
+      defaultSpecFolders,
+      'spec',
+      fs)
+
+    state = new PluginState(
+      emitter, railsRSpecFinder, rspecAnalyzerCommand)
 
   describe 'When no editor available', ->
     it 'sets null state', ->

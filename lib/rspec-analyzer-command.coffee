@@ -4,20 +4,23 @@ AstParser = require './ast-parser'
 
 module.exports =
   class RSpecAnalyzerCommand
-    constructor: (terminalCommandRunner) ->
-      @emitter = new Emitter
-      # @terminalCommandRunner = terminalCommandRunner
+    constructor: (
+      emitter = new Emitter,
+      terminalCommandRunner = new TerminalCommandRunner,
+      astParser = new AstParser
+      path = path)  ->
+      @emitter = emitter
+      @terminalCommandRunner = terminalCommandRunner
+      @path = path
+      @astParser = astParser
 
     run: (file) ->
-      @terminalCommandRunner = new TerminalCommandRunner
-      @astParser = new AstParser
-
       rubyPath = atom.config.get('rspec-tree-runner.rubyPath')
 
       rspecAnalyzerScript = atom.config.get('rspec-tree-runner.rspecAnalyzerScript')
 
       if !rspecAnalyzerScript?
-        rspecAnalyzerScript = path.resolve(__dirname, '../spec-analyzer/spec_analyzer_script.rb')
+        rspecAnalyzerScript = @path.resolve(__dirname, '../spec-analyzer/spec_analyzer_script.rb')
 
       command = "#{rubyPath} #{rspecAnalyzerScript} #{file}"
 

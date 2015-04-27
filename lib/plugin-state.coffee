@@ -3,8 +3,11 @@ RailsRSpecFinder = require './rails-rspec-finder'
 
 module.exports =
 class PluginState
-  constructor: (railsRSpecFinder, rspecAnalyzerCommand) ->
-    @emitter = new Emitter
+  constructor: (
+    emitter = new Emitter,
+    railsRSpecFinder = new RailsRSpecFinder,
+    rspecAnalyzerCommand = new RSpecAnalyzerCommand) ->
+    @emitter = emitter
     @railsRSpecFinder = railsRSpecFinder
     @rspecAnalyzerCommand = rspecAnalyzerCommand
 
