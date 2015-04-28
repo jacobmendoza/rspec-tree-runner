@@ -20,8 +20,8 @@ class TerminalCommandRunner
 
     terminalCommand = if @destinyFolder then "cd #{@destinyFolder} && #{@command}\n" else "#{@command}\n"
 
-    console.log terminalCommand
-    
+    console.log "Launching command to terminal: #{terminalCommand}"
+
     terminal.stdin.write(terminalCommand)
 
     terminal.stdin.write("exit\n")

@@ -2,20 +2,24 @@ PluginState = require '../lib/plugin-state'
 RailsRSpecFinder = require '../lib/rails-rspec-finder'
 
 describe 'PluginState', ->
-  [railsRSpecFinder, state] = []
+  [railsRSpecFinder, state, rspecAnalyzerCommand, fs, emitter] = []
   defaultSpecFolders = ['spec', 'fast_spec']
   rootFolder = '/Users/X/Repo/project-folder'
-  fs = { existsSync: -> true }
 
   beforeEach ->
     emitter = {}
+
+    fs = { existsSync: -> true }
 
     rspecAnalyzerCommand = {
       run: (file) -> true
       onDataParsed: (asTree) -> []
     }
-    
+
+    spyOn(rspecAnalyzerCommand, 'run')
+
     atom.config.set('rspec-tree-runner.specDefaultPath', 'spec')
+
     atom.config.set('rspec-tree-runner.specSearchPaths', ['spec', 'fast_spec'])
 
     railsRSpecFinder = new RailsRSpecFinder(rootFolder, fs)
@@ -44,29 +48,46 @@ describe 'PluginState', ->
       specFile = '/Users/X/Repo/project-folder/spec/some_file_spec.rb'
       correspondingFile = '/Users/X/Repo/project-folder/app/some_file.rb'
 
-      editor = {
-        buffer: {
-          file: {
-            path: specFile } } }
+      editor = { buffer: { file: { path: specFile } } }
 
       state.set(editor)
       expect(state.currentFilePath).toBe(specFile)
       expect(state.currentCorrespondingFilePath).toBe(correspondingFile)
       expect(state.specFileToAnalyze).toBe(specFile)
       expect(state.specFileExists).toBe(true)
+      expect(rspecAnalyzerCommand.run).toHaveBeenCalledWith(specFile)
 
   describe 'When normal file is supplied', ->
-    it 'sets a correct state', ->
-      normalFile = '/Users/X/Repo/project-folder/app/some_file.rb'
-      correspondingFile = '/Users/X/Repo/project-folder/spec/some_file_spec.rb'
+    normalFile = '/Users/X/Repo/project-folder/app/some_file.rb'
+    correspondingFile = '/Users/X/Repo/project-folder/spec/some_file_spec.rb'
+    editor = { buffer: { file: { path: normalFile } } }
 
-      editor = {
-        buffer: {
-          file: {
-            path: normalFile } } }
+    describe 'If file exists', ->
+      beforeEach ->
+        state.set(editor)
 
-      state.set(editor)
-      expect(state.currentFilePath).toBe(normalFile)
-      expect(state.currentCorrespondingFilePath).toBe(correspondingFile)
-      expect(state.specFileToAnalyze).toBe(correspondingFile)
-      expect(state.specFileExists).toBe(true)
+      it 'runs the command', ->
+        expect(rspecAnalyzerCommand.run).toHaveBeenCalledWith(correspondingFile)
+
+      it 'sets a correct state', ->
+        expect(state.currentFilePath).toBe(normalFile)
+        expect(state.currentCorrespondingFilePath).toBe(correspondingFile)
+        expect(state.specFileToAnalyze).toBe(correspondingFile)
+        expect(state.specFileExists).toBe(true)
+
+    describe 'If file does not exist', ->
+      beforeEach ->
+        debugger
+        fs = { existsSync: -> false }
+        railsRSpecFinder = new RailsRSpecFinder(rootFolder, fs)
+        state = new PluginState(emitter, railsRSpecFinder, rspecAnalyzerCommand)
+        state.set(editor)
+
+      it 'does not run the command', ->
+        expect(rspecAnalyzerCommand.run).not.toHaveBeenCalledWith(correspondingFile)
+
+      it 'sets a correct state', ->
+        expect(state.currentFilePath).toBe(normalFile)
+        expect(state.currentCorrespondingFilePath).toBe(correspondingFile)
+        expect(state.specFileToAnalyze).toBe(correspondingFile)
+        expect(state.specFileExists).toBe(false)

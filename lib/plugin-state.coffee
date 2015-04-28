@@ -34,7 +34,7 @@ class PluginState
 
       @specFileExists = @railsRSpecFinder.fileExists(@specFileToAnalyze)
 
-      @analyze(@specFileToAnalyze) if @specFileToAnalyze?
+      @analyze(@specFileToAnalyze) if (@specFileToAnalyze? and @specFileExists)
 
       @rspecAnalyzerCommand.onDataParsed (asTree) =>
         @emitter.emit 'onTreeBuilt', asTree

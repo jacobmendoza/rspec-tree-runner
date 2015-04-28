@@ -28,9 +28,9 @@ class RSpecTreeView extends View
 
   redrawTree: (asTree) ->
     children = asTree || {}
-    @treeView.setRoot({ label: 'root', children: children }) if @treeView?
     fileName = if children.length > 0 then @currentState.currentFileName else ''
-    @treeView.changeFile(fileName)
+    @treeView.setRoot({ label: 'root', children: children }) if @treeView?
+    @treeView.changeFile(fileName) if @treeView?
 
   setCurrentAndCorrespondingFile: (editor) ->
     @currentState.set(editor)
