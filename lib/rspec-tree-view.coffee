@@ -1,6 +1,5 @@
 {Disposable, CompositeDisposable} = require 'atom'
 {View, $$} = require 'atom-space-pen-views'
-
 {TreeView} = require './tree-view'
 PluginState = require './plugin-state'
 
@@ -31,6 +30,7 @@ class RSpecTreeView extends View
     fileName = if children.length > 0 then @currentState.currentFileName else ''
     @treeView.setRoot({ label: 'root', children: children }) if @treeView?
     @treeView.changeFile(fileName) if @treeView?
+    @treeView.displayFile(true)
 
   setCurrentAndCorrespondingFile: (editor) ->
     @currentState.set(editor)
@@ -40,7 +40,7 @@ class RSpecTreeView extends View
     else
       @redrawTree({})
       this.find('.spec-does-not-exist').show()
-      this.find('.file-to-analyze').html(@currentState.specFileToAnalyze)
+      @treeView.displayFile(false)
 
   handleEditorEvents: (editor) ->
     return unless editor

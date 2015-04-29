@@ -5,8 +5,10 @@
 @import "ui-variables";
 
 .rspec-tree-runner {
-  .success { color:green; }
-  .success :before { content: ' \25CF'; font-size: 20px; vertical-align: sub; padding: 3px; }
+  width: 300px;
+  height: 100%;
+  padding: 5px;
+  overflow: scroll;
 
   .plugin-font-base {
     font-family: "Helvetica Neue", Helvetica;
@@ -14,10 +16,23 @@
     text-align:center;
   }
 
-  width: 300px;
-  height: 100%;
-  padding: 5px;
-  overflow: scroll;
+  .plugin-icons-font-base {
+    font-family: 'Octicons Regular';
+    font-weight: normal;
+    font-style: normal;
+    text-shadow: none;
+  }
+
+  .success { color:green; }
+
+  .success :before { content: ' \25CF'; font-size: 20px; vertical-align: sub; padding: 3px; }
+
+  h3.tree-view-title:before{
+    .plugin-icons-font-base;
+    content: ' \f011';
+    font-size: 15px;
+    margin-right: 10px;
+  }
 
   h3.tree-view-title {
     text-align: left;
@@ -47,6 +62,11 @@
   h3 {
     font-size:14px;
     .plugin-font-base;
+  }
+
+  .file-to-analyze {
+    text-align: center;
+    font-size: 11px;
   }
 
 }

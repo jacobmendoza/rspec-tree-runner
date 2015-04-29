@@ -16,6 +16,8 @@ module.exports =
       @astParser = astParser
 
     run: (file) ->
+      @terminalCommandRunner.clean()
+
       rubyPath = atom.config.get('rspec-tree-runner.rubyPath')
 
       rspecAnalyzerScript = atom.config.get('rspec-tree-runner.rspecAnalyzerScript')

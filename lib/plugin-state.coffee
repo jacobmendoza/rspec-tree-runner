@@ -13,11 +13,14 @@ class PluginState
     @rspecAnalyzerCommand = rspecAnalyzerCommand
 
   set: (editor) ->
+
+    
     if ((!editor) || (!editor.buffer))
       @currentFilePath = null
       @currentCorrespondingFilePath = null
       @specFileToAnalyze = null
       @specFileExists = null
+      @specFileToAnalyzeWithoutProjectRoot = null
     else
       @currentFilePath = editor.buffer.file.path
 
@@ -33,6 +36,8 @@ class PluginState
       @currentFileName = @specFileToAnalyze.split("/").pop();
 
       @specFileExists = @railsRSpecFinder.fileExists(@specFileToAnalyze)
+
+      @specFileToAnalyzeWithoutProjectRoot = @railsRSpecFinder.getFileWithoutProjectRoot(@specFileToAnalyze) if @specFileToAnalyze?
 
       @analyze(@specFileToAnalyze) if (@specFileToAnalyze? and @specFileExists)
 

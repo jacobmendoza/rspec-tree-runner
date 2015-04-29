@@ -73,8 +73,14 @@ module.exports =
       @title = ''
       @emitter = new Emitter
 
-    changeFile: (title) ->
-      this.find('.tree-view-title').html(title)
+    changeFile: (fileName) ->
+      title = this.find('.tree-view-title')
+      title.show()
+      title.text(fileName)
+
+    displayFile: (display) ->
+      title = this.find('.tree-view-title')
+      if display then title.show() else title.hide()
 
     deactivate: ->
       @remove()

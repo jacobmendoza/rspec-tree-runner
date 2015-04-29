@@ -5,8 +5,7 @@ module.exports =
 class TerminalCommandRunner
   constructor: ->
     @emitter = new Emitter
-    @stdOutData = ''
-    @stdErrorData = ''
+    @clean()
   run: (command, destinyFolder = null) ->
     @command = command
     @destinyFolder = destinyFolder
@@ -25,6 +24,10 @@ class TerminalCommandRunner
     terminal.stdin.write(terminalCommand)
 
     terminal.stdin.write("exit\n")
+
+  clean: ->
+    @stdOutData = ''
+    @stdErrorData = ''
 
   onDataReceived: (callback) ->
     @emitter.on 'onData', callback
