@@ -18,7 +18,7 @@ module.exports =
     run: (file) ->
       @terminalCommandRunner.clean()
 
-      rubyPath = atom.config.get('rspec-tree-runner.rubyPath')
+      rubyPath = atom.config.get('rspec-tree-runner.rubyPathCommand')
 
       rspecAnalyzerScript = atom.config.get('rspec-tree-runner.rspecAnalyzerScript')
 

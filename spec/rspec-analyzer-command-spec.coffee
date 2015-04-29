@@ -8,7 +8,7 @@ describe 'RSpecAnalyzerCommand', ->
   beforeEach ->
     emitter: {}
     fakePath = { resolve: {} }
-    atom.config.set('rspec-tree-runner.rubyPath', 'ruby')
+    atom.config.set('rspec-tree-runner.rubyPathCommand', 'ruby')
 
     terminalCommandRunner = new TerminalCommandRunner
 

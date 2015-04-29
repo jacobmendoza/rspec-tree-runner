@@ -14,9 +14,12 @@ module.exports =
     rspecAnalyzerScript:
       type: 'string'
       default: undefined
-    rubyPath:
+    rubyPathCommand:
       type: 'string'
       default: 'ruby'
+    rspecPathCommand:
+      type: 'string'
+      default: 'rspec --format j'
 
   rspecTreeRunnerView: null
   mainView: null

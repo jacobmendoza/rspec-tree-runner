@@ -77,7 +77,6 @@ describe 'PluginState', ->
 
     describe 'If file does not exist', ->
       beforeEach ->
-        debugger
         fs = { existsSync: -> false }
         railsRSpecFinder = new RailsRSpecFinder(rootFolder, fs)
         state = new PluginState(emitter, railsRSpecFinder, rspecAnalyzerCommand)
