@@ -37,6 +37,8 @@ module.exports =
 
     @subscriptions.add atom.commands.add 'atom-workspace', 'rspec-tree-runner:toggle-spec-file': => @mainView.toggleSpecFile()
 
+    @subscriptions.add atom.commands.add 'atom-workspace', 'rspec-tree-runner:run-tests': => @mainView.runTests()
+
   deactivate: ->
     @modalPanel.destroy()
     @subscriptions.dispose()

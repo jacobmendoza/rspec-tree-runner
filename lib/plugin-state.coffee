@@ -1,5 +1,6 @@
 RailsRSpecFinder = require './rails-rspec-finder'
 RSpecAnalyzerCommand = require './rspec-analyzer-command'
+RSpecLauncherCommand = require './rspec-launcher-command'
 {Emitter} = require 'event-kit'
 
 module.exports =
@@ -7,14 +8,14 @@ class PluginState
   constructor: (
   emitter = new Emitter,
   railsRSpecFinder = new RailsRSpecFinder,
-  rspecAnalyzerCommand = new RSpecAnalyzerCommand) ->
+  rspecAnalyzerCommand = new RSpecAnalyzerCommand,
+  rspecLauncherCommand = new RSpecLauncherCommand) ->
     @emitter = emitter
     @railsRSpecFinder = railsRSpecFinder
     @rspecAnalyzerCommand = rspecAnalyzerCommand
+    @rspecLauncherCommand = rspecLauncherCommand
 
   set: (editor) ->
-
-    
     if ((!editor) || (!editor.buffer))
       @currentFilePath = null
       @currentCorrespondingFilePath = null
@@ -44,8 +45,21 @@ class PluginState
       @rspecAnalyzerCommand.onDataParsed (asTree) =>
         @emitter.emit 'onTreeBuilt', asTree
 
+      @rspecLauncherCommand.onResultReceived (testsResult) =>
+        @emitter.emit 'onTestsExecuted', testsResult
+
   analyze: (file) ->
     @rspecAnalyzerCommand.run(file)
 
+  runTests: ->
+    return unless @specFileToAnalyze?
+
+    return unless @specFileExists
+
+    @rspecLauncherCommand.run(@specFileToAnalyze)
+
   onTreeBuilt: (callback) ->
     @emitter.on 'onTreeBuilt', callback
+
+  onTestsExecuted: (callback) ->
+    @emitter.on 'onTestsExecuted', callback

@@ -28,9 +28,11 @@ class RSpecTreeView extends View
   redrawTree: (asTree) ->
     children = asTree || {}
     fileName = if children.length > 0 then @currentState.currentFileName else ''
-    @treeView.setRoot({ label: 'root', children: children }) if @treeView?
-    @treeView.changeFile(fileName) if @treeView?
-    @treeView.displayFile(true)
+
+    if @treeView?
+      @treeView.setRoot({ label: 'root', children: children })
+      @treeView.changeFile(fileName) if @treeView?
+      @treeView.displayFile(true)
 
   setCurrentAndCorrespondingFile: (editor) ->
     @currentState.set(editor)
@@ -46,6 +48,11 @@ class RSpecTreeView extends View
     return unless editor
 
     @setCurrentAndCorrespondingFile(editor)
+
+  runTests: ->
+    return unless @currentState.specFileExists
+
+    @currentState.runTests()
 
   toggleSpecFile: ->
     atom.workspace.open(@currentState.currentCorrespondingFilePath) if @currentState.currentCorrespondingFilePath?

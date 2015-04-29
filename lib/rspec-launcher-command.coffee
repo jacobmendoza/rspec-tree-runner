@@ -8,8 +8,6 @@ class RSpecLauncherCommand
     @terminalCommandRunner = terminalCommandRunner
 
   run: (file) ->
-    debugger
-
     rspecCommandPath = atom.config.get('rspec-tree-runner.rspecPathCommand')
 
     command = "#{rspecCommandPath} #{file}"
