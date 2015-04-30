@@ -9,7 +9,7 @@ describe 'PluginState', ->
   rootFolder = '/Users/X/Repo/project-folder'
 
   beforeEach ->
-    emitter = {}
+    emitter = { emit: (param) -> true }
 
     fs = { existsSync: -> true }
 
@@ -66,6 +66,7 @@ describe 'PluginState', ->
     editor = { buffer: { file: { path: specFile } } }
 
     beforeEach ->
+      debugger
       state.set(editor)
       state.runTests()
 

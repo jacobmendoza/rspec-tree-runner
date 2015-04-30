@@ -10,6 +10,79 @@
   padding: 5px;
   overflow: scroll;
 
+  .circle { content: ' \25CF'; font-size: 20px; vertical-align: sub; padding: 3px; }
+  .passed { color:green; }
+  .failed { color:red; }
+  .passed :before { .circle; }
+  .failed :before { .circle; }
+
+  .tests-summary {
+    border-top: 1px solid #888;
+    border-bottom: 1px solid #888;
+    padding: 10px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    display: table;
+
+    .tests-summary-container {
+      display:table;
+      margin: 0 auto;
+    }
+
+    .summary-element{
+      float:left;
+      padding-right: 15px;
+      text-transform: uppercase;
+      font-weight: normal;
+      width: 80px;
+    }
+
+    .tests-summary-passed { .summary-element; }
+    .tests-summary-failed { .summary-element; }
+    .tests-summary-pending { .summary-element; }
+
+    .text {
+      text-align: center;
+      width: 100%;
+      letter-spacing: -1px;
+    }
+
+    .number {
+      font-weight: 100;
+      font-size: 32px;
+      text-align: center;
+      width: 100%;
+      letter-spacing: -3px;
+    }
+  }
+
+  .tree-view-updating {
+    display:none;
+
+    padding: 10px;
+    font-weight: bold;
+    margin-bottom: 20px;
+
+    .tree-view-updating-spinner {
+      float:left;
+      display: block;
+      width: 24px;
+      height: 24px;
+      background-image: url(images/octocat-spinner-128.gif);
+      background-repeat: no-repeat;
+      background-size: cover;
+
+      &.inline-block {
+        display: inline-block;
+      }
+    }
+
+    .tree-view-updating-text {
+      padding-left: 40px;
+      padding-top: 3px;
+    }
+  }
+
   .plugin-font-base {
     font-family: "Helvetica Neue", Helvetica;
     font-weight: 200;
@@ -22,13 +95,6 @@
     font-style: normal;
     text-shadow: none;
   }
-
-  .circle { content: ' \25CF'; font-size: 20px; vertical-align: sub; padding: 3px; }
-
-  .passed { color:green; }
-  .failed { color:red; }
-  .passed :before { .circle; }
-  .failed :before { .circle; }
 
   h3.tree-view-title:before{
     .plugin-icons-font-base;
@@ -51,10 +117,6 @@
       font-family: 'Helvetica Neue', Helvetica;
       font-size: 11px;
       padding-left: 10px;
-
-      .list-tree {
-        padding-left: 15px;
-      }
   }
 
   h2 {

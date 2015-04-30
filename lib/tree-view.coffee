@@ -66,6 +66,20 @@ module.exports =
     @content: ->
       @div class: 'rspec-tree-runner-tree-view', =>
         @h3 class: 'tree-view-title', ''
+        @div class: 'tests-summary', =>
+          @div class: 'tree-view-updating', =>
+            @div class: 'tree-view-updating-spinner'
+            @div class: 'tree-view-updating-text', ''
+          @div class: 'tests-summary-container', =>
+            @div class: 'tests-summary-passed', =>
+              @div class: 'number', '-'
+              @div class: 'text', 'passed'
+            @div class: 'tests-summary-failed', =>
+              @div class:'number', '-'
+              @div class: 'text', 'failed'
+            @div class: 'tests-summary-pending', =>
+              @div class: 'number', '-'
+              @div class: 'text', 'pending'
         @ul class: 'list-tree has-collapsable-children', outlet: 'root'
 
     initialize: ->
@@ -81,6 +95,24 @@ module.exports =
     displayFile: (display) ->
       title = this.find('.tree-view-title')
       if display then title.show() else title.hide()
+
+    displayLoading: (text) ->
+      loadingDiv = this.find('.tree-view-updating')
+      loadingText = this.find('.tree-view-updating-text')
+      loadingDiv.show()
+      loadingText.html(text)
+
+    hideLoading: ->
+      loadingDiv = this.find('.tree-view-updating')
+      loadingText = this.find('.tree-view-updating-text')
+      loadingDiv.hide()
+      loadingText.html('')
+
+    updateSummary: (summary) ->
+      debugger
+      this.find('.tests-summary-passed .number').html(summary.passed)
+      this.find('.tests-summary-failed .number').html(summary.failed)
+      this.find('.tests-summary-pending .number').html(summary.pending)
 
     deactivate: ->
       @remove()

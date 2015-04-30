@@ -15,7 +15,14 @@ class RSpecTreeView extends View
   initialize:  ->
     @currentState = new PluginState
 
-    @currentState.onTreeBuilt (asTree) => @redrawTree(asTree)
+    @currentState.onTreeBuilt (result) =>
+      @redrawTree(result.asTree, result.summary)
+
+    @currentState.onSpecFileBeingAnalyzed =>
+      @treeView.displayLoading('Spec file being analyzed') if @treeView?
+
+    @currentState.onTestsRunning =>
+      @treeView.displayLoading('RSpec running tests') if @treeView?
 
     @setCurrentAndCorrespondingFile(atom.workspace.getActiveTextEditor())
 
@@ -25,7 +32,7 @@ class RSpecTreeView extends View
 
     @disposables = new CompositeDisposable
 
-  redrawTree: (asTree) ->
+  redrawTree: (asTree, summary) ->
     children = asTree || {}
     fileName = if children.length > 0 then @currentState.currentFileName else ''
 
@@ -33,6 +40,14 @@ class RSpecTreeView extends View
       @treeView.setRoot({ label: 'root', children: children })
       @treeView.changeFile(fileName) if @treeView?
       @treeView.displayFile(true)
+      @treeView.hideLoading()
+
+      if summary?
+        @treeView.updateSummary({
+          passed: summary.example_count - summary.failure_count,
+          failed: summary.failure_count,
+          pending: summary.pending_count
+        })
 
   setCurrentAndCorrespondingFile: (editor) ->
     @currentState.set(editor)
