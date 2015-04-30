@@ -43,10 +43,12 @@ class PluginState
       @analyze(@specFileToAnalyze) if (@specFileToAnalyze? and @specFileExists)
 
       @rspecAnalyzerCommand.onDataParsed (asTree) =>
+        @asTree = asTree
         @emitter.emit 'onTreeBuilt', asTree
 
-      @rspecLauncherCommand.onResultReceived (testsResult) =>
-        @emitter.emit 'onTestsExecuted', testsResult
+      @rspecLauncherCommand.onResultReceived (testsResults) =>
+        @testsResults = testsResults
+        @updateTreeWithTests()
 
   analyze: (file) ->
     @rspecAnalyzerCommand.run(file)
@@ -58,8 +60,28 @@ class PluginState
 
     @rspecLauncherCommand.run(@specFileToAnalyze)
 
+  updateTreeWithTests: ->
+    return unless @asTree.length > 0
+    @updateNode(@asTree[0], @testsResults)
+    @emitter.emit 'onTreeBuilt', @asTree
+
+  updateNode: (node, testsResults) ->
+    for child in node.children
+      @updateNode(child, testsResults)
+
+    if node.type == 'it' and node.line?
+      for example in testsResults.examples
+        if example.line_number == node.line
+          node.status = example.status
+          break
+    else
+      finalStatus = true
+      for child in node.children
+        if child.status == 'failed'
+          finalStatus = false
+          break
+
+      node.status = if finalStatus then 'passed' else 'failed'
+
   onTreeBuilt: (callback) ->
     @emitter.on 'onTreeBuilt', callback
-
-  onTestsExecuted: (callback) ->
-    @emitter.on 'onTestsExecuted', callback

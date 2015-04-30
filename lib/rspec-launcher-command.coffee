@@ -8,6 +8,8 @@ class RSpecLauncherCommand
     @terminalCommandRunner = terminalCommandRunner
 
   run: (file) ->
+    @terminalCommandRunner.clean()
+
     rspecCommandPath = atom.config.get('rspec-tree-runner.rspecPathCommand')
 
     command = "#{rspecCommandPath} #{file}"
@@ -20,4 +22,5 @@ class RSpecLauncherCommand
     @emitter.on 'onResultReceived', callback
 
   parseRSpecResult: (data) ->
-    @emitter.emit 'onResultReceived', data
+    jsonData = if !!data.stdOutData then JSON.parse(data.stdOutData) else {}
+    @emitter.emit 'onResultReceived', jsonData

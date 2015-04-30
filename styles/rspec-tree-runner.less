@@ -23,9 +23,12 @@
     text-shadow: none;
   }
 
-  .success { color:green; }
+  .circle { content: ' \25CF'; font-size: 20px; vertical-align: sub; padding: 3px; }
 
-  .success :before { content: ' \25CF'; font-size: 20px; vertical-align: sub; padding: 3px; }
+  .passed { color:green; }
+  .failed { color:red; }
+  .passed :before { .circle; }
+  .failed :before { .circle; }
 
   h3.tree-view-title:before{
     .plugin-icons-font-base;

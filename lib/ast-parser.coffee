@@ -14,7 +14,7 @@ class AstParser
         type: currentOld.type
         text: currentOld.identifier
         line: currentOld.line
-        status: 'success'
+        status: undefined
         children: []
       }
 

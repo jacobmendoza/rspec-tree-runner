@@ -42,7 +42,7 @@ class RSpecTreeView extends View
     else
       @redrawTree({})
       this.find('.spec-does-not-exist').show()
-      @treeView.displayFile(false)
+      @treeView.displayFile(false) if @treeView?
 
   handleEditorEvents: (editor) ->
     return unless editor
