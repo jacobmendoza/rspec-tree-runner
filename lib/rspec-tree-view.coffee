@@ -29,8 +29,7 @@ class RSpecTreeView extends View
     @currentState = new PluginState
 
     @currentState.onTreeBuilt (result) =>
-      debugger
-      @setStdErrorNotification(result.stdErrorData)
+      @setStdErrorNotification(result)
       @redrawTree(result.asTree, result.summary)
 
     @currentState.onSpecFileBeingAnalyzed =>
@@ -47,15 +46,20 @@ class RSpecTreeView extends View
 
     @disposables = new CompositeDisposable
 
-  setStdErrorNotification: (stdErrorData) ->
-    return unless stdErrorData?
+  setStdErrorNotification: (result) ->
+    return unless result.stdErrorData?
 
-    return unless stdErrorData.length > 0
+    return unless result.stdErrorData.length > 0
 
-    if stdErrorData.length > 350
-      stdErrorData = stdErrorData.substring(0, 350).concat("...")
+    dataToDisplay = ""
 
-    atom.notifications.addWarning("RSpec if running with warnings", { detail: stdErrorData });
+    if result.stdErrorData.length > 350
+      dataToDisplay = result.stdErrorData.substring(0, 350).concat("...")
+
+    if result.summary?
+      atom.notifications.addWarning("RSpec is running with warnings", { detail: dataToDisplay });
+    else
+      atom.notifications.addError("RSpec has failed", { detail: dataToDisplay });
 
   redrawTree: (asTree, summary) ->
     children = asTree || {}

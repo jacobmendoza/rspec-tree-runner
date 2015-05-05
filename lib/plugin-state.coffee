@@ -44,7 +44,7 @@ class PluginState
 
       @rspecAnalyzerCommand.onDataParsed (asTree) =>
         @asTree = asTree
-        @emitter.emit 'onTreeBuilt', { asTree: asTree, summary: undefined, stdErroData: undefined }
+        @emitter.emit 'onTreeBuilt', { asTree: asTree, summary: undefined, stdErrorData: undefined }
 
       @rspecLauncherCommand.onResultReceived (testsResults) =>
         @updateTreeWithTests(testsResults.result, testsResults.stdErrorData)
@@ -65,7 +65,7 @@ class PluginState
   updateTreeWithTests: (results, stdErrorData) ->
     return unless @asTree.length > 0
 
-    @updateNode(@asTree[0], results) if results?
+    @updateNode(@asTree[0], results) if results? and results.examples?
 
     @emitter.emit 'onTreeBuilt', {
       asTree: @asTree,
