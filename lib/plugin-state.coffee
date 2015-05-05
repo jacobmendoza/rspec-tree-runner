@@ -63,9 +63,9 @@ class PluginState
     @rspecLauncherCommand.run(@specFileToAnalyze)
 
   updateTreeWithTests: (results, stdErrorData) ->
-    return unless @asTree.length > 0
+    shouldUpdateTree = results? and results.examples? and @asTree.length > 0
 
-    @updateNode(@asTree[0], results) if results? and results.examples?
+    @updateNode(@asTree[0], results) if shouldUpdateTree
 
     @emitter.emit 'onTreeBuilt', {
       asTree: @asTree,

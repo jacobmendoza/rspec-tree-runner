@@ -7,11 +7,11 @@ module.exports =
 class RSpecTreeView extends View
   @content: ->
     @div class: 'rspec-tree-runner tool-panel focusable-panel', =>
+      @h3 class: 'tree-view-title', ''
       @div class: 'spec-does-not-exist', =>
         @h2 'It seems that this file doesn\'t have spec file'
         @h3 'Press ctrl-alt-q to create a new one'
         @div class: 'file-to-analyze'
-      @h3 class: 'tree-view-title', ''
       @div class: 'tests-summary', =>
         @div class: 'tests-summary-container', =>
           @div class: 'tests-summary-passed', =>
@@ -63,11 +63,9 @@ class RSpecTreeView extends View
 
   redrawTree: (asTree, summary) ->
     children = asTree || {}
-    fileName = if children.length > 0 then @currentState.currentFileName else ''
 
     if @treeView?
       @treeView.setRoot({ label: 'root', children: children })
-      @changeFile(fileName) if @treeView?
       @displayFile(true)
       @treeView.hideLoading()
 
@@ -81,12 +79,16 @@ class RSpecTreeView extends View
   setCurrentAndCorrespondingFile: (editor) ->
     @currentState.set(editor)
 
+    @changeFile(@currentState.currentFileName)
+
     if @currentState.specFileExists
       this.find('.spec-does-not-exist').hide()
+      this.find('.tests-summary').show()
     else
       @redrawTree({})
       this.find('.spec-does-not-exist').show()
-      @treeView.displayFile(false) if @treeView?
+      this.find('.tests-summary').hide()
+      @treeView.hide if @treeView?
 
   changeFile: (fileName) ->
     title = this.find('.tree-view-title')
@@ -103,9 +105,11 @@ class RSpecTreeView extends View
     this.find('.tests-summary-pending .number').html(summary.pending)
 
   handleEditorEvents: (editor) ->
-    return unless editor
-
-    @setCurrentAndCorrespondingFile(editor)
+    if editor?
+      this.show()
+      @setCurrentAndCorrespondingFile(editor)
+    else
+      this.hide()
 
   runTests: ->
     return unless @currentState.specFileExists
