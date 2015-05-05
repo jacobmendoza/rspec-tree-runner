@@ -7,7 +7,7 @@
 .rspec-tree-runner {
   width: 300px;
   height: 100%;
-  padding: 5px;
+  padding: 20px;
   overflow: scroll;
 
   .circle { content: ' \25CF'; font-size: 20px; vertical-align: sub; padding: 3px; }
@@ -19,10 +19,10 @@
   .tests-summary {
     border-top: 1px solid #888;
     border-bottom: 1px solid #888;
-    padding: 10px;
     font-weight: bold;
     margin-bottom: 20px;
     display: table;
+    width: 100%;
 
     .tests-summary-container {
       display:table;
@@ -35,6 +35,7 @@
       text-transform: uppercase;
       font-weight: normal;
       width: 80px;
+      padding-bottom: 10px;
     }
 
     .tests-summary-passed { .summary-element; }
@@ -48,6 +49,7 @@
     }
 
     .number {
+      .plugin-font-base;
       font-weight: 100;
       font-size: 32px;
       text-align: center;
@@ -56,30 +58,27 @@
     }
   }
 
-  .tree-view-updating {
-    display:none;
 
-    padding: 10px;
-    font-weight: bold;
-    margin-bottom: 20px;
+  .tree-view-updating {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    display: none;
 
     .tree-view-updating-spinner {
-      float:left;
-      display: block;
-      width: 24px;
-      height: 24px;
       background-image: url(images/octocat-spinner-128.gif);
       background-repeat: no-repeat;
       background-size: cover;
-
-      &.inline-block {
-        display: inline-block;
-      }
+      background-position: center center;
+      background-size: 64px 64px;
+      height: 84px;
     }
 
     .tree-view-updating-text {
-      padding-left: 40px;
-      padding-top: 3px;
+      .plugin-font-base;
+
+      font-size:16px;
+      text-align: center;
     }
   }
 
@@ -113,10 +112,8 @@
   }
 
   .rspec-tree-runner-tree-view {
-      padding: 15px;
       font-family: 'Helvetica Neue', Helvetica;
       font-size: 11px;
-      padding-left: 10px;
   }
 
   h2 {

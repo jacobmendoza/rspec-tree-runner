@@ -23,4 +23,4 @@ class RSpecLauncherCommand
 
   parseRSpecResult: (data) ->
     jsonData = if !!data.stdOutData then JSON.parse(data.stdOutData) else {}
-    @emitter.emit 'onResultReceived', jsonData
+    @emitter.emit 'onResultReceived', { result: jsonData, stdErrorData: data.stdErrorData }

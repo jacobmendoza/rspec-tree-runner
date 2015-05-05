@@ -65,54 +65,41 @@ module.exports =
   TreeView: class TreeView extends ScrollView
     @content: ->
       @div class: 'rspec-tree-runner-tree-view', =>
-        @h3 class: 'tree-view-title', ''
-        @div class: 'tests-summary', =>
-          @div class: 'tree-view-updating', =>
+
+        @div class: 'tree-view-updating', =>
+          @div class: 'x', =>
             @div class: 'tree-view-updating-spinner'
             @div class: 'tree-view-updating-text', ''
-          @div class: 'tests-summary-container', =>
-            @div class: 'tests-summary-passed', =>
-              @div class: 'number', '-'
-              @div class: 'text', 'passed'
-            @div class: 'tests-summary-failed', =>
-              @div class:'number', '-'
-              @div class: 'text', 'failed'
-            @div class: 'tests-summary-pending', =>
-              @div class: 'number', '-'
-              @div class: 'text', 'pending'
         @ul class: 'list-tree has-collapsable-children', outlet: 'root'
+
 
     initialize: ->
       super
       @title = ''
       @emitter = new Emitter
 
-    changeFile: (fileName) ->
-      title = this.find('.tree-view-title')
-      title.show()
-      title.text(fileName)
-
-    displayFile: (display) ->
-      title = this.find('.tree-view-title')
-      if display then title.show() else title.hide()
-
     displayLoading: (text) ->
-      loadingDiv = this.find('.tree-view-updating')
-      loadingText = this.find('.tree-view-updating-text')
-      loadingDiv.show()
-      loadingText.html(text)
+      console.log 'displayLoading'
+      this.find('.tree-view-updating').show()
+      e = this.find('.tree-view-updating .tree-view-updating-text')
+      e.html("Running tests")
+      elem = this.find('.list-tree.has-collapsable-children')
+      elem.css("opacity", "0.1")
+      # loadingDiv = this.find('.tree-view-updating')
+      # loadingText = this.find('.tree-view-updating-text')
+      # loadingDiv.show()
+      # loadingText.html(text)
 
     hideLoading: ->
-      loadingDiv = this.find('.tree-view-updating')
-      loadingText = this.find('.tree-view-updating-text')
-      loadingDiv.hide()
-      loadingText.html('')
-
-    updateSummary: (summary) ->
-      debugger
-      this.find('.tests-summary-passed .number').html(summary.passed)
-      this.find('.tests-summary-failed .number').html(summary.failed)
-      this.find('.tests-summary-pending .number').html(summary.pending)
+      console.log 'hideLoading'
+      this.find('.tree-view-updating').hide()
+      elem = this.find('.list-tree.has-collapsable-children')
+      elem.css("opacity", "1")
+      # elem.removeClass("loading")
+      # loadingDiv = this.find('.tree-view-updating')
+      # loadingText = this.find('.tree-view-updating-text')
+      # loadingDiv.hide()
+      # loadingText.html('')
 
     deactivate: ->
       @remove()

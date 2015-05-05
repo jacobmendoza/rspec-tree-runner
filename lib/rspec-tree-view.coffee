@@ -11,11 +11,26 @@ class RSpecTreeView extends View
         @h2 'It seems that this file doesn\'t have spec file'
         @h3 'Press ctrl-alt-q to create a new one'
         @div class: 'file-to-analyze'
+      @h3 class: 'tree-view-title', ''
+      @div class: 'tests-summary', =>
+        @div class: 'tests-summary-container', =>
+          @div class: 'tests-summary-passed', =>
+            @div class: 'number', '-'
+            @div class: 'text', 'passed'
+          @div class: 'tests-summary-failed', =>
+            @div class:'number', '-'
+            @div class: 'text', 'failed'
+          @div class: 'tests-summary-pending', =>
+            @div class: 'number', '-'
+            @div class: 'text', 'pending'
+      @div class: 'rspec-tree-runner-view-container'
 
   initialize:  ->
     @currentState = new PluginState
 
     @currentState.onTreeBuilt (result) =>
+      debugger
+      @setStdErrorNotification(result.stdErrorData)
       @redrawTree(result.asTree, result.summary)
 
     @currentState.onSpecFileBeingAnalyzed =>
@@ -28,9 +43,19 @@ class RSpecTreeView extends View
 
     @treeView = new TreeView
 
-    @append(@treeView)
+    this.find('.rspec-tree-runner-view-container').append(@treeView)
 
     @disposables = new CompositeDisposable
+
+  setStdErrorNotification: (stdErrorData) ->
+    return unless stdErrorData?
+
+    return unless stdErrorData.length > 0
+
+    if stdErrorData.length > 350
+      stdErrorData = stdErrorData.substring(0, 350).concat("...")
+
+    atom.notifications.addWarning("RSpec if running with warnings", { detail: stdErrorData });
 
   redrawTree: (asTree, summary) ->
     children = asTree || {}
@@ -38,12 +63,12 @@ class RSpecTreeView extends View
 
     if @treeView?
       @treeView.setRoot({ label: 'root', children: children })
-      @treeView.changeFile(fileName) if @treeView?
-      @treeView.displayFile(true)
+      @changeFile(fileName) if @treeView?
+      @displayFile(true)
       @treeView.hideLoading()
 
       if summary?
-        @treeView.updateSummary({
+        @updateSummary({
           passed: summary.example_count - summary.failure_count,
           failed: summary.failure_count,
           pending: summary.pending_count
@@ -58,6 +83,20 @@ class RSpecTreeView extends View
       @redrawTree({})
       this.find('.spec-does-not-exist').show()
       @treeView.displayFile(false) if @treeView?
+
+  changeFile: (fileName) ->
+    title = this.find('.tree-view-title')
+    title.show()
+    title.text(fileName)
+
+  displayFile: (display) ->
+    title = this.find('.tree-view-title')
+    if display then title.show() else title.hide()
+
+  updateSummary: (summary) ->
+    this.find('.tests-summary-passed .number').html(summary.passed)
+    this.find('.tests-summary-failed .number').html(summary.failed)
+    this.find('.tests-summary-pending .number').html(summary.pending)
 
   handleEditorEvents: (editor) ->
     return unless editor

@@ -44,11 +44,10 @@ class PluginState
 
       @rspecAnalyzerCommand.onDataParsed (asTree) =>
         @asTree = asTree
-        @emitter.emit 'onTreeBuilt', { asTree: asTree, summary: undefined }
+        @emitter.emit 'onTreeBuilt', { asTree: asTree, summary: undefined, stdErroData: undefined }
 
       @rspecLauncherCommand.onResultReceived (testsResults) =>
-        @testsResults = testsResults
-        @updateTreeWithTests()
+        @updateTreeWithTests(testsResults.result, testsResults.stdErrorData)
 
   analyze: (file) ->
     @emitter.emit 'onSpecFileBeingAnalyzed'
@@ -63,10 +62,16 @@ class PluginState
 
     @rspecLauncherCommand.run(@specFileToAnalyze)
 
-  updateTreeWithTests: ->
+  updateTreeWithTests: (results, stdErrorData) ->
     return unless @asTree.length > 0
-    @updateNode(@asTree[0], @testsResults)
-    @emitter.emit 'onTreeBuilt', { asTree: @asTree, summary: @testsResults.summary }
+
+    @updateNode(@asTree[0], results) if results?
+
+    @emitter.emit 'onTreeBuilt', {
+      asTree: @asTree,
+      summary: if results? then results.summary || undefined else undefined,
+      stdErrorData: stdErrorData || ""
+    }
 
   updateNode: (node, testsResults) ->
     for child in node.children
