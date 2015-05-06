@@ -1,7 +1,9 @@
 {Disposable, CompositeDisposable} = require 'atom'
 {View, $$} = require 'atom-space-pen-views'
 {TreeView} = require './tree-view'
+
 PluginState = require './plugin-state'
+RSpecTestDetails = require './rspec-test-details'
 
 module.exports =
 class RSpecTreeView extends View
@@ -30,7 +32,7 @@ class RSpecTreeView extends View
 
     @currentState.onTreeBuilt (result) =>
       @setStdErrorNotification(result)
-      @redrawTree(result.asTree, result.summary)
+      @redrawTree(result.asTree, result)
 
     @currentState.onSpecFileBeingAnalyzed =>
       @treeView.displayLoading('Spec file being analyzed') if @treeView?
@@ -41,6 +43,11 @@ class RSpecTreeView extends View
     @setCurrentAndCorrespondingFile(atom.workspace.getActiveTextEditor())
 
     @treeView = new TreeView
+
+    @treeView.onDblClick ({item}) =>
+      if item.exception?
+        @rspecTestDetails.setVisible(true)
+        @rspecTestDetails.setContent(item.exception)
 
     this.find('.rspec-tree-runner-view-container').append(@treeView)
 
@@ -61,7 +68,7 @@ class RSpecTreeView extends View
     else
       atom.notifications.addError("RSpec has failed", { detail: dataToDisplay });
 
-  redrawTree: (asTree, summary) ->
+  redrawTree: (asTree, testsResults) ->
     children = asTree || {}
 
     if @treeView?
@@ -69,11 +76,11 @@ class RSpecTreeView extends View
       @displayFile(true)
       @treeView.hideLoading()
 
-      if summary?
+      if testsResults? and testsResults.summary?
         @updateSummary({
-          passed: summary.example_count - summary.failure_count,
-          failed: summary.failure_count,
-          pending: summary.pending_count
+          passed: testsResults.summary.example_count - testsResults.summary.failure_count,
+          failed: testsResults.summary.failure_count,
+          pending: testsResults.summary.pending_count
         })
 
   setCurrentAndCorrespondingFile: (editor) ->
@@ -128,11 +135,18 @@ class RSpecTreeView extends View
       @panel.show()
 
   attach: ->
+    @rspecTestDetails = new RSpecTestDetails
+
     @panel = atom.workspace.addRightPanel(item: this, visible: false)
 
     @disposables.add new Disposable =>
       @panel.destroy()
       @panel = null
+
+    @disposables.add new Disposable =>
+      @rspecTestDetails.panel.destroy()
+      @rspecTestDetails.panel = null
+
 
     @disposables.add atom.workspace.onDidChangeActivePaneItem (editor) =>
       @handleEditorEvents(editor)

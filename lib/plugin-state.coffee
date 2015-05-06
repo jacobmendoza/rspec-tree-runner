@@ -80,6 +80,7 @@ class PluginState
     if node.type == 'it' and node.line?
       for example in testsResults.examples
         if example.line_number == node.line
+          node.exception = example.exception
           node.status = example.status
           break
     else

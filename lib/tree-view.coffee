@@ -1,12 +1,13 @@
 {$, $$, View, ScrollView} = require 'atom-space-pen-views'
 {Emitter} = require 'event-kit'
+{CompositeDisposable} = require 'atom'
 
 module.exports =
   TreeNode: class TreeNode extends View
     @content: ({text, children, status}) ->
       if children
         @li class: 'list-nested-item list-selectable-item', =>
-          @div class: "list-item #{status}", =>
+          @div class: "list-item test-#{status}", =>
             @span text
           @ul class: 'list-tree', =>
             for child in children
@@ -65,13 +66,11 @@ module.exports =
   TreeView: class TreeView extends ScrollView
     @content: ->
       @div class: 'rspec-tree-runner-tree-view', =>
-
         @div class: 'tree-view-updating', =>
-          @div class: 'x', =>
+          @div class: 'tree-view-updating-container', =>
             @div class: 'tree-view-updating-spinner'
             @div class: 'tree-view-updating-text', ''
         @ul class: 'list-tree has-collapsable-children', outlet: 'root'
-
 
     initialize: ->
       super
@@ -79,27 +78,17 @@ module.exports =
       @emitter = new Emitter
 
     displayLoading: (text) ->
-      console.log 'displayLoading'
       this.find('.tree-view-updating').show()
       e = this.find('.tree-view-updating .tree-view-updating-text')
       e.html("Running tests")
       elem = this.find('.list-tree.has-collapsable-children')
       elem.css("opacity", "0.1")
-      # loadingDiv = this.find('.tree-view-updating')
-      # loadingText = this.find('.tree-view-updating-text')
-      # loadingDiv.show()
-      # loadingText.html(text)
 
     hideLoading: ->
       console.log 'hideLoading'
       this.find('.tree-view-updating').hide()
       elem = this.find('.list-tree.has-collapsable-children')
       elem.css("opacity", "1")
-      # elem.removeClass("loading")
-      # loadingDiv = this.find('.tree-view-updating')
-      # loadingText = this.find('.tree-view-updating-text')
-      # loadingDiv.hide()
-      # loadingText.html('')
 
     deactivate: ->
       @remove()
@@ -107,11 +96,15 @@ module.exports =
     onSelect: (callback) =>
       @emitter.on 'on-select', callback
 
+    onDblClick: (callback) =>
+      @emitter.on 'on-dbl-click', callback
+
     setRoot: (root, ignoreRoot=true) ->
       @rootNode = new TreeNode(root)
 
       @rootNode.onDblClick ({node, item}) =>
         node.setCollapsed()
+        @emitter.emit 'on-dbl-click', {node, item}
       @rootNode.onSelect ({node, item}) =>
         @clearSelect()
         node.setSelected()

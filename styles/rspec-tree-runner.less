@@ -4,20 +4,50 @@
 // for a full listing of what's available.
 @import "ui-variables";
 
+.rspec-test-details {
+
+  h1 { font-size: 20px; }
+  button { margin-top: 10px; }
+
+  .message {
+    font-size: 11px;
+    font-weight: bold;
+    margin-bottom: 15px;
+  }
+
+  .backtrace {
+    height: 250px;
+  }
+
+  .backtrace-text {
+    overflow: scroll;
+    height: 100%;
+    font-size: 9px;
+    padding: 10px;
+    border: 1px solid #888;
+  }
+}
+
 .rspec-tree-runner {
   width: 300px;
   height: 100%;
   padding: 20px;
   overflow: scroll;
 
-  .circle { content: ' \25CF'; font-size: 20px; vertical-align: sub; padding: 3px; }
-  .passed { color:green; }
-  .failed { color:red; }
-  .passed :before { .circle; }
-  .failed :before { .circle; }
+  .circle { content: ' \25CF'; font-size: 20px; vertical-align: sub; padding: 3px; position:absolute; right: 20px; }
+
+  .test-passed { color:green !important; }
+  .test-failed { color:red !important; }
+  .test-passed :before { .circle; }
+  .test-failed :before { .circle; }
+
+  .plugin-font-base {
+    font-family: "Helvetica Neue", Helvetica;
+    font-weight: 200;
+    text-align:center;
+  }
 
   .tests-summary {
-    // border-top: 1px solid #888;
     border-bottom: 1px solid #888;
     font-weight: bold;
     margin-bottom: 20px;
@@ -82,12 +112,6 @@
     }
   }
 
-  .plugin-font-base {
-    font-family: "Helvetica Neue", Helvetica;
-    font-weight: 200;
-    text-align:center;
-  }
-
   .plugin-icons-font-base {
     font-family: 'Octicons Regular';
     font-weight: normal;
@@ -108,7 +132,7 @@
     padding-left: 0px;
     margin: 0;
     padding-bottom: 10px;
-    margin-bottom: 15px;
+    margin-bottom: 5px;
     border-bottom: 1px solid #888;
   }
 
