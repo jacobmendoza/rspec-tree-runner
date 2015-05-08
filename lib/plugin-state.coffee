@@ -25,7 +25,7 @@ class PluginState
     else
       @currentFilePath = editor.buffer.file.path
 
-      currentFilePathExtension = @currentFilePath.split('.').pop();
+      @currentFilePathExtension = @currentFilePath.split('.').pop();
 
       @currentCorrespondingFilePath = @railsRSpecFinder.toggleSpecFile(@currentFilePath)
 

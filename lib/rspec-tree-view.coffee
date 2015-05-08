@@ -14,6 +14,9 @@ class RSpecTreeView extends View
         @h2 'It seems that this file doesn\'t have spec file'
         @h3 'Press ctrl-alt-q to create a new one'
         @div class: 'file-to-analyze'
+      @div class: 'not-ruby-file', =>
+        @h2 'It seems that this is not a ruby file'
+        @h3 'The file must have the extension .rb'
       @div class: 'tests-summary', =>
         @div class: 'tests-summary-container', =>
           @div class: 'tests-summary-passed', =>
@@ -85,6 +88,17 @@ class RSpecTreeView extends View
 
   setCurrentAndCorrespondingFile: (editor) ->
     @currentState.set(editor)
+
+    if @currentState.currentFilePathExtension != "rb"
+      this.find('.not-ruby-file').show()
+      this.find('.spec-does-not-exist').hide()
+      this.find('.tests-summary').hide()
+      this.find('.rspec-tree-runner-view-container').hide()
+      this.find('.tree-view-title').hide()
+      return
+    else
+      this.find('.not-ruby-file').hide()
+      this.find('.rspec-tree-runner-view-container').show()
 
     @changeFile(@currentState.currentFileName)
 
