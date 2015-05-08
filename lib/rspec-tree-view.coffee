@@ -161,9 +161,23 @@ class RSpecTreeView extends View
       @rspecTestDetails.panel.destroy()
       @rspecTestDetails.panel = null
 
+    @wireEventsForEditor(atom.workspace.getActiveTextEditor())
 
     @disposables.add atom.workspace.onDidChangeActivePaneItem (editor) =>
+      @wireEventsForEditor(editor)
+
+  wireEventsForEditor: (editor) ->
+    return unless editor
+
+    @currentEditorSubscriptions?.dispose()
+    @currentEditorSubscriptions = new CompositeDisposable
+
+    @currentBuffer = editor.getBuffer()
+
+    @currentEditorSubscriptions.add @currentBuffer.onDidSave =>
       @handleEditorEvents(editor)
+
+    @handleEditorEvents(editor)
 
   detach: ->
     @disposables.dispose()

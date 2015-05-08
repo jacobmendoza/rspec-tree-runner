@@ -1,6 +1,8 @@
 module.exports =
 class AstParser
   parse: (data) ->
+    if !data then return []
+
     @tree = []
     jsonObject = JSON.parse(data)
     @addChildren(@tree, jsonObject)
