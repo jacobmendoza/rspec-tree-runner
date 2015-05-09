@@ -12,7 +12,7 @@ class RSpecTreeView extends View
       @h3 class: 'tree-view-title', ''
       @div class: 'spec-does-not-exist', =>
         @h2 'It seems that this file doesn\'t have spec file'
-        @h3 'Press ctrl-alt-q to create a new one'
+        @h3 class:'toggle-file-hint', ''
         @div class: 'file-to-analyze'
       @div class: 'not-ruby-file', =>
         @h2 'It seems that this is not a ruby file'
@@ -28,6 +28,7 @@ class RSpecTreeView extends View
           @div class: 'tests-summary-pending', =>
             @div class: 'number', '-'
             @div class: 'text', 'pending'
+      @h3 class: 'run-tests-hint', ''
       @div class: 'rspec-tree-runner-view-container'
 
   initialize:  ->
@@ -89,6 +90,8 @@ class RSpecTreeView extends View
   setCurrentAndCorrespondingFile: (editor) ->
     @currentState.set(editor)
 
+    this.find('.run-tests-hint').hide()
+
     if @currentState.currentFilePathExtension != "rb"
       this.find('.not-ruby-file').show()
       this.find('.spec-does-not-exist').hide()
@@ -105,6 +108,7 @@ class RSpecTreeView extends View
     if @currentState.specFileExists
       this.find('.spec-does-not-exist').hide()
       this.find('.tests-summary').show()
+      this.find('.run-tests-hint').show()
     else
       @redrawTree({})
       this.find('.spec-does-not-exist').show()
@@ -153,6 +157,8 @@ class RSpecTreeView extends View
 
     @panel = atom.workspace.addRightPanel(item: this, visible: false)
 
+    @prepareKeyStrokesText()
+
     @disposables.add new Disposable =>
       @panel.destroy()
       @panel = null
@@ -165,6 +171,19 @@ class RSpecTreeView extends View
 
     @disposables.add atom.workspace.onDidChangeActivePaneItem (editor) =>
       @wireEventsForEditor(editor)
+
+  prepareKeyStrokesText: ->
+    debugger
+
+    toggleSpecFileKeyBindings = atom.keymaps.findKeyBindings({command:'rspec-tree-runner:toggle-spec-file' })
+    runTestsKeyBindings = atom.keymaps.findKeyBindings({command:'rspec-tree-runner:run-tests' })
+
+    toggleSpecFileKeyStroke = if (toggleSpecFileKeyBindings and toggleSpecFileKeyBindings.length > 0) then toggleSpecFileKeyBindings[0].keystroke else 'not def'
+
+    runTestsKeyStroke = if (runTestsKeyBindings and runTestsKeyBindings.length > 0) then runTestsKeyBindings[0].keystroke else 'not def'
+
+    this.find('h3.toggle-file-hint').html("Press #{toggleSpecFileKeyStroke} to create a new one")
+    this.find('h3.run-tests-hint').html("Press #{runTestsKeyStroke} to run tests")
 
   wireEventsForEditor: (editor) ->
     return unless editor
