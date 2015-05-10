@@ -75,13 +75,17 @@ class RSpecTreeView extends View
 
     return unless result.stdErrorData.length > 0
 
-    dataToDisplay = ""
+    size = atom.config.get('rspec-tree-runner.sizeOfRSpecMessageStrings')
 
-    if result.stdErrorData.length > 350
-      dataToDisplay = result.stdErrorData.substring(0, 350).concat("...")
+    showWarnings = atom.config.get('rspec-tree-runner.showRSpecWarningMessages')
+
+    dataToDisplay = result.stdErrorData
+
+    if result.stdErrorData.length > size
+      dataToDisplay = result.stdErrorData.substring(0, size).concat("...")
 
     if result.summary?
-      atom.notifications.addWarning("RSpec is running with warnings", { detail: dataToDisplay });
+      atom.notifications.addWarning("RSpec is running with warnings", { detail: dataToDisplay }) if showWarnings
     else
       atom.notifications.addError("RSpec has failed", { detail: dataToDisplay });
 

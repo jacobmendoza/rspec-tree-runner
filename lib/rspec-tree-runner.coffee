@@ -23,6 +23,12 @@ module.exports =
     changeToSpecFileOnClick:
       type: 'boolean'
       default: true
+    showRSpecWarningMessages:
+      type: 'boolean'
+      default: true
+    sizeOfRSpecMessageStrings:
+      type: 'integer'
+      default: 500
 
   rspecTreeRunnerView: null
   mainView: null
