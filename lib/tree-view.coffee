@@ -3,11 +3,29 @@
 {CompositeDisposable} = require 'atom'
 
 module.exports =
+  WithReportSubView: class WithReportSubView extends View
+    @content: (withReport) ->
+      @div class: "test-#{withReport}", =>
+        @span ''
+
+    initialize: (item) ->
+      @emitter = new Emitter
+      @withReport = item
+
+      @on 'dblclick', @dblClickItem
+
+    onReportClicked: (callback) ->
+      @emitter.on 'on-dbl-click', callback
+
+    dblClickItem: (event) =>
+      @emitter.emit 'on-dbl-click'
+      return false
+
   TreeNode: class TreeNode extends View
-    @content: ({text, children, status}) ->
+    @content: ({text, children, status, withReport}) ->
       if children
         @li class: 'list-nested-item list-selectable-item', =>
-          @div class: "list-item test-#{status}", =>
+          @div class: "list-item report-container test-#{status}", =>
             @span text
           @ul class: 'list-tree', =>
             for child in children
@@ -20,6 +38,10 @@ module.exports =
       @emitter = new Emitter
       @item = item
       @item.view = this
+
+      @withReportSubView = new WithReportSubView(item.withReport)
+      this.find('.report-container').append(@withReportSubView)
+      @withReportSubView.onReportClicked => @reportClicked()
 
       @on 'dblclick', @dblClickItem
       @on 'click', @clickItem
@@ -43,6 +65,12 @@ module.exports =
         for child in @item.children
           child.view.onSelect callback
 
+    onReportClicked: (callback) ->
+      @emitter.on 'on-report-clicked', callback
+      if @item.children
+        for child in @item.children
+          child.view.onReportClicked callback
+
     clickItem: (event) =>
       if @item.children
         selected = @hasClass('selected')
@@ -58,10 +86,13 @@ module.exports =
       @emitter.emit 'on-select', {node: this, item: @item}
       return false
 
+    reportClicked: ->
+      @emitter.emit 'on-report-clicked', {node: this, item: @item}
+      return false
+
     dblClickItem: (event) =>
       @emitter.emit 'on-dbl-click', {node: this, item: @item}
       return false
-
 
   TreeView: class TreeView extends ScrollView
     @content: ->
@@ -99,6 +130,9 @@ module.exports =
     onDblClick: (callback) =>
       @emitter.on 'on-dbl-click', callback
 
+    onReportClicked: (callback) =>
+      @emitter.on 'on-report-clicked', callback
+
     setRoot: (root, ignoreRoot=true) ->
       @rootNode = new TreeNode(root)
 
@@ -109,6 +143,8 @@ module.exports =
         @clearSelect()
         node.setSelected()
         @emitter.emit 'on-select', {node, item}
+      @rootNode.onReportClicked ({node, item}) =>
+        @emitter.emit 'on-report-clicked', {node, item}
 
       @root.empty()
       @root.append $$ ->

@@ -48,10 +48,23 @@ class RSpecTreeView extends View
 
     @treeView = new TreeView
 
-    @treeView.onDblClick ({item}) =>
+    @treeView.onReportClicked ({item}) =>
       if item.exception?
         @rspecTestDetails.setVisible(true)
         @rspecTestDetails.setContent(item.exception)
+
+    @treeView.onSelect ({item}) =>
+      return unless @currentState?
+
+      return unless (@currentState.specFileToAnalyze? and @currentState.specFileExists)
+
+      atom.workspace.open(@currentState.specFileToAnalyze)
+
+      position = [item.line - 1, 0]
+      editor = atom.workspace.getActiveTextEditor()
+      editor.scrollToBufferPosition(position, center: true)
+      editor.setCursorBufferPosition(position)
+      editor.moveToFirstCharacterOfLine()
 
     this.find('.rspec-tree-runner-view-container').append(@treeView)
 
@@ -173,8 +186,6 @@ class RSpecTreeView extends View
       @wireEventsForEditor(editor)
 
   prepareKeyStrokesText: ->
-    debugger
-
     toggleSpecFileKeyBindings = atom.keymaps.findKeyBindings({command:'rspec-tree-runner:toggle-spec-file' })
     runTestsKeyBindings = atom.keymaps.findKeyBindings({command:'rspec-tree-runner:run-tests' })
 

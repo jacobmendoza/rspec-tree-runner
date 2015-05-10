@@ -82,6 +82,7 @@ class PluginState
         if example.line_number == node.line
           node.exception = example.exception
           node.status = example.status
+          node.withReport = if example.status == 'failed' then 'with-report' else ''
           break
     else
       finalStatus = true

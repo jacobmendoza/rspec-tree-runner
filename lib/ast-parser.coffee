@@ -17,6 +17,7 @@ class AstParser
         text: currentOld.identifier
         line: currentOld.line
         status: undefined
+        withReport: undefined
         children: []
       }
 
