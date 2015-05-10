@@ -44,8 +44,6 @@ class RSpecTreeView extends View
     @currentState.onTestsRunning =>
       @treeView.displayLoading('RSpec running tests') if @treeView?
 
-    @setCurrentAndCorrespondingFile(atom.workspace.getActiveTextEditor())
-
     @treeView = new TreeView
 
     @treeView.onReportClicked ({item}) =>
@@ -57,6 +55,8 @@ class RSpecTreeView extends View
       return unless @currentState?
 
       return unless (@currentState.specFileToAnalyze? and @currentState.specFileExists)
+
+      return unless atom.config.get('rspec-tree-runner.changeToSpecFileOnClick')
 
       atom.workspace.open(@currentState.specFileToAnalyze)
 
@@ -101,32 +101,47 @@ class RSpecTreeView extends View
         })
 
   setCurrentAndCorrespondingFile: (editor) ->
+    this.show()
+
     @currentState.set(editor)
 
     this.find('.run-tests-hint').hide()
 
     if @currentState.currentFilePathExtension != "rb"
-      this.find('.not-ruby-file').show()
-      this.find('.spec-does-not-exist').hide()
-      this.find('.tests-summary').hide()
-      this.find('.rspec-tree-runner-view-container').hide()
-      this.find('.tree-view-title').hide()
+      @setUiForNonRubyFileMessage()
       return
-    else
-      this.find('.not-ruby-file').hide()
-      this.find('.rspec-tree-runner-view-container').show()
 
-    @changeFile(@currentState.currentFileName)
+    @setUiForRubyFile()
 
     if @currentState.specFileExists
-      this.find('.spec-does-not-exist').hide()
-      this.find('.tests-summary').show()
-      this.find('.run-tests-hint').show()
+      @setUiForSpecFileExists()
     else
-      @redrawTree({})
-      this.find('.spec-does-not-exist').show()
-      this.find('.tests-summary').hide()
-      @treeView.hide if @treeView?
+      @setUiForSpecFileNotExists()
+
+  setUiForSpecFileExists: ->
+    this.find('.spec-does-not-exist').hide()
+    this.find('.tests-summary').show()
+    this.find('.run-tests-hint').show()
+
+  setUiForSpecFileNotExists: ->
+    @redrawTree({})
+    this.find('.spec-does-not-exist').show()
+    this.find('.tests-summary').hide()
+    @treeView.hide if @treeView?
+
+  setUiForRubyFile: ->
+    this.find('.not-ruby-file').hide()
+    this.find('.rspec-tree-runner-view-container').show()
+    @changeFile(@currentState.currentFileName)
+
+  setUiForNonRubyFileMessage: ->
+    this.find('.not-ruby-file').show()
+    this.find('.spec-does-not-exist').hide()
+    this.find('.tests-summary').hide()
+    this.find('.rspec-tree-runner-view-container').hide()
+    this.find('.tree-view-title').hide()
+    this.find('.run-tests-hint').hide()
+    return
 
   changeFile: (fileName) ->
     title = this.find('.tree-view-title')
@@ -143,8 +158,16 @@ class RSpecTreeView extends View
     this.find('.tests-summary-pending .number').html(summary.pending)
 
   handleEditorEvents: (editor) ->
+    @currentEditorSubscriptions?.dispose()
+    @currentEditorSubscriptions = new CompositeDisposable
+
+    currentBuffer = @getCurrentBuffer(editor)
+
+    if currentBuffer?
+      @currentEditorSubscriptions.add currentBuffer.onDidSave =>
+        @setCurrentAndCorrespondingFile(editor)
+
     if editor?
-      this.show()
       @setCurrentAndCorrespondingFile(editor)
     else
       this.hide()
@@ -196,18 +219,17 @@ class RSpecTreeView extends View
     this.find('h3.toggle-file-hint').html("Press #{toggleSpecFileKeyStroke} to create a new one")
     this.find('h3.run-tests-hint').html("Press #{runTestsKeyStroke} to run tests")
 
+  getCurrentBuffer: (editor) ->
+    try
+      editor.getBuffer()
+    catch error
+      undefined
+
   wireEventsForEditor: (editor) ->
-    return unless editor
-
-    @currentEditorSubscriptions?.dispose()
-    @currentEditorSubscriptions = new CompositeDisposable
-
-    @currentBuffer = editor.getBuffer()
-
-    @currentEditorSubscriptions.add @currentBuffer.onDidSave =>
+    if !editor?
+      @setUiForNonRubyFileMessage()
+    else
       @handleEditorEvents(editor)
-
-    @handleEditorEvents(editor)
 
   detach: ->
     @disposables.dispose()

@@ -20,6 +20,9 @@ module.exports =
     rspecPathCommand:
       type: 'string'
       default: 'rspec --format j'
+    changeToSpecFileOnClick:
+      type: 'boolean'
+      default: true
 
   rspecTreeRunnerView: null
   mainView: null
