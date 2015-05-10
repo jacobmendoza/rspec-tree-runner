@@ -66,7 +66,6 @@ describe 'PluginState', ->
     editor = { buffer: { file: { path: specFile } } }
 
     beforeEach ->
-      debugger
       state.set(editor)
       state.runTests()
 
