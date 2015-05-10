@@ -61,6 +61,7 @@
     .plugin-font-base;
     font-size:12px;
     text-align: left;
+    color: @text-color-info;
   }
 
   h3.run-tests-hint:before{
@@ -72,8 +73,8 @@
 
   .circle { content: ' \25CF'; font-size: 20px; vertical-align: sub; padding: 3px; position:absolute; right: 20px; }
 
-  .test-passed { color:green !important; }
-  .test-failed { color:red !important; }
+  .test-passed { color: @text-color-success !important; }
+  .test-failed { color: @text-color-error !important; }
   .test-with-report { float:right; }
   .test-with-report :before  { .plugin-icons-font-base; content: ' \f076'; font-size: 20px;  }
 
@@ -167,5 +168,4 @@
     text-align: center;
     font-size: 11px;
   }
-
 }
