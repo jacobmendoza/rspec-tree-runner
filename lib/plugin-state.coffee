@@ -23,7 +23,11 @@ class PluginState
 
       @currentFilePathExtension = @currentFilePath.split('.').pop();
 
+      isNavigatingToCorresponding = @prevCorrespondingFilePath? and @prevCorrespondingFilePath == @currentFilePath
+
       @currentCorrespondingFilePath = @railsRSpecFinder.toggleSpecFile(@currentFilePath)
+
+      @prevCorrespondingFilePath = @currentCorrespondingFilePath
 
       if !@currentCorrespondingFilePath?
         @setNullState()
@@ -40,7 +44,9 @@ class PluginState
 
       @specFileToAnalyzeWithoutProjectRoot = @railsRSpecFinder.getFileWithoutProjectRoot(@specFileToAnalyze) if @specFileToAnalyze?
 
-      @analyze(@specFileToAnalyze) if (@specFileToAnalyze? and @specFileExists)
+      shouldAnalyze = @specFileToAnalyze? and @specFileExists and !isNavigatingToCorresponding
+
+      @analyze(@specFileToAnalyze) if (shouldAnalyze)
 
       @rspecAnalyzerCommand.onDataParsed (asTree) =>
         @asTree = asTree
