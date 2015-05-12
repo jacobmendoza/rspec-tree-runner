@@ -4,8 +4,15 @@ class AstParser
     if !data then return []
 
     @tree = []
-    jsonObject = JSON.parse(data)
-    @addChildren(@tree, jsonObject)
+
+    try
+      jsonObject = JSON.parse(data)
+      @addChildren(@tree, jsonObject)
+    catch error
+      console.log 'Error when parsing the following data'
+      console.log data
+      console.log error
+
     @tree
 
   addChildren: (result, currentOld) ->
