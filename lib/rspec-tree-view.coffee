@@ -28,7 +28,8 @@ class RSpecTreeView extends View
           @div class: 'tests-summary-pending', =>
             @div class: 'number', '-'
             @div class: 'text', 'pending'
-      @h3 class: 'run-tests-hint', ''
+      @h3 class: 'run-tests-hint hint', ''
+      @h3 class: 'toggle-file-hint hint', ''
       @div class: 'rspec-tree-runner-view-container'
 
   initialize:  ->
@@ -110,6 +111,7 @@ class RSpecTreeView extends View
     @currentState.set(editor)
 
     this.find('.run-tests-hint').hide()
+    this.find('.toggle-file-hint').hide()
 
     if @currentState.currentFilePathExtension != "rb"
       @setUiForNonRubyFileMessage()
@@ -126,6 +128,8 @@ class RSpecTreeView extends View
     this.find('.spec-does-not-exist').hide()
     this.find('.tests-summary').show()
     this.find('.run-tests-hint').show()
+    this.find('.toggle-file-hint').show()
+    this.find('.toggle-file-hint').show()
 
   setUiForSpecFileNotExists: ->
     @redrawTree({})
@@ -145,6 +149,7 @@ class RSpecTreeView extends View
     this.find('.rspec-tree-runner-view-container').hide()
     this.find('.tree-view-title').hide()
     this.find('.run-tests-hint').hide()
+    this.find('.toggle-file-hint').hide()
     return
 
   changeFile: (fileName) ->
@@ -220,7 +225,7 @@ class RSpecTreeView extends View
 
     runTestsKeyStroke = if (runTestsKeyBindings and runTestsKeyBindings.length > 0) then runTestsKeyBindings[0].keystroke else 'not def'
 
-    this.find('h3.toggle-file-hint').html("Press #{toggleSpecFileKeyStroke} to create a new one")
+    this.find('h3.toggle-file-hint').html("Press #{toggleSpecFileKeyStroke} to toggle/create")
     this.find('h3.run-tests-hint').html("Press #{runTestsKeyStroke} to run tests")
 
   getCurrentBuffer: (editor) ->
