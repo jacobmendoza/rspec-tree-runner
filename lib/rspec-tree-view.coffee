@@ -224,10 +224,10 @@ class RSpecTreeView extends View
   prepareKeyStrokesText: ->
     toggleSpecFileKeyBindings = atom.keymaps.findKeyBindings({command:'rspec-tree-runner:toggle-spec-file' })
     runTestsKeyBindings = atom.keymaps.findKeyBindings({command:'rspec-tree-runner:run-tests' })
+    
+    toggleSpecFileKeyStroke = if (toggleSpecFileKeyBindings and toggleSpecFileKeyBindings.length > 0) then toggleSpecFileKeyBindings[0].keystrokes else 'not def'
 
-    toggleSpecFileKeyStroke = if (toggleSpecFileKeyBindings and toggleSpecFileKeyBindings.length > 0) then toggleSpecFileKeyBindings[0].keystroke else 'not def'
-
-    runTestsKeyStroke = if (runTestsKeyBindings and runTestsKeyBindings.length > 0) then runTestsKeyBindings[0].keystroke else 'not def'
+    runTestsKeyStroke = if (runTestsKeyBindings and runTestsKeyBindings.length > 0) then runTestsKeyBindings[0].keystrokes else 'not def'
 
     this.find('.toggle-file-hint').html("Press #{toggleSpecFileKeyStroke} to toggle/create")
     this.find('h3.run-tests-hint').html("Press #{runTestsKeyStroke} to run tests")
