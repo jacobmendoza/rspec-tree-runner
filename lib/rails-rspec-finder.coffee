@@ -1,7 +1,10 @@
 Path = require 'path'
 
+rootPathReg = ->
+  new RegExp('^\/[\\w,\\s-]+(\\.[A-Za-z]+)*$', 'i')
+
 supportedPathsReg = (paths) ->
-  new RegExp("^\/(app|lib|#{paths.join('|')})\/", 'i')
+  new RegExp("^\/(app|lib|src|#{paths.join('|')})\/", 'i')
 
 specLibPathsReg = (paths) ->
   new RegExp("^\/(#{paths.join('|')})\/lib\/", 'i')
@@ -18,7 +21,12 @@ class RailsRSpecFinder
 
   toggleSpecFile: (file) ->
     relativePath = @getFileWithoutProjectRoot(file)
-    return null unless relativePath.match supportedPathsReg(@specPaths)
+
+    specPathsMatch = relativePath.match supportedPathsReg(@specPaths)
+
+    rootMatch =  rootPathReg().test(relativePath)
+
+    return null unless specPathsMatch or rootMatch
 
     if @isSpec(relativePath)
       @getRubyFile relativePath

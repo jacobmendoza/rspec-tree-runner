@@ -17,17 +17,17 @@ class PluginState
 
   set: (editor) ->
     if ((!editor) || (!editor.buffer))
-      @currentFilePath = null
-      @currentCorrespondingFilePath = null
-      @specFileToAnalyze = null
-      @specFileExists = null
-      @specFileToAnalyzeWithoutProjectRoot = null
+      @setNullState()
     else
       @currentFilePath = editor.buffer.file.path
 
       @currentFilePathExtension = @currentFilePath.split('.').pop();
 
       @currentCorrespondingFilePath = @railsRSpecFinder.toggleSpecFile(@currentFilePath)
+
+      if !@currentCorrespondingFilePath?
+        @setNullState()
+        return
 
       if @railsRSpecFinder.isSpec(@currentFilePath)
         @specFileToAnalyze = @currentFilePath
@@ -48,6 +48,13 @@ class PluginState
 
       @rspecLauncherCommand.onResultReceived (testsResults) =>
         @updateTreeWithTests(testsResults.result, testsResults.stdErrorData)
+
+  setNullState: ->
+    @currentFilePath = null
+    @currentCorrespondingFilePath = null
+    @specFileToAnalyze = null
+    @specFileExists = null
+    @specFileToAnalyzeWithoutProjectRoot = null
 
   analyze: (file) ->
     @emitter.emit 'onSpecFileBeingAnalyzed'
