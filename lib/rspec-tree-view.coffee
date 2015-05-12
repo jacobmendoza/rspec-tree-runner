@@ -4,6 +4,7 @@
 
 PluginState = require './plugin-state'
 RSpecTestDetails = require './rspec-test-details'
+RailsRSpecFinder = require './rails-rspec-finder'
 
 module.exports =
 class RSpecTreeView extends View
@@ -34,6 +35,8 @@ class RSpecTreeView extends View
 
   initialize:  ->
     @currentState = new PluginState
+
+    @railsRSpecFinder = new RailsRSpecFinder
 
     @currentState.onTreeBuilt (result) =>
       @setStdErrorNotification(result)
@@ -174,7 +177,8 @@ class RSpecTreeView extends View
 
     if currentBuffer?
       @currentEditorSubscriptions.add currentBuffer.onDidSave =>
-        @setCurrentAndCorrespondingFile(editor)
+        if @railsRSpecFinder.isSpec(editor.getBuffer().file.path)
+          @setCurrentAndCorrespondingFile(editor)
 
     if editor?
       @setCurrentAndCorrespondingFile(editor)
