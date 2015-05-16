@@ -1,7 +1,7 @@
 {
   "name": "rspec-tree-runner",
   "main": "./lib/rspec-tree-runner",
-  "version": "0.4.0",
+  "version": "0.0.0",
   "description": "RSpec runner and files analyzer for Atom editor",
   "activationCommands": {
     "atom-workspace": "rspec-tree-runner:toggle",
