@@ -2,7 +2,7 @@
 ## Introduction
 RSpec-tree-runner is a package for Atom that aims to be a complete test runner for Atom and RSpec.
 
-![screen cast](http://jacob-code.github.io/rspec-tree-runner/demo.gif)
+![screen cast](http://jacobmendoza.github.io/rspec-tree-runner/demo.gif)
 
 This package finds the corresponding tests for your file, displaying the hierarchical structure and allowing you to run them, integrating the results in the editor.
 
