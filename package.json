@@ -7,7 +7,7 @@
     "atom-workspace": "rspec-tree-runner:toggle",
     "atom-text-editor": "buffer:saved"
   },
-  "repository": "https://github.com/Jacob84/rspec-tree-runner",
+  "repository": "https://github.com/jacobmendoza/rspec-tree-runner",
   "license": "MIT",
   "engines": {
     "atom": ">=0.174.0 <2.0.0"

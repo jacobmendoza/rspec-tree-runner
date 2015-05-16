@@ -1,4 +1,5 @@
 Path = require 'path'
+fs = require 'fs'
 
 rootPathReg = ->
   new RegExp('^\/[\\w,\\s-]+(\\.[A-Za-z]+)*$', 'i')
