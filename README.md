@@ -1,5 +1,5 @@
 # rspec-tree-runner for Atom
-## Introduction
+
 RSpec-tree-runner is a package for Atom that aims to be a complete test runner for Atom and RSpec.
 
 ![screen cast](http://jacobmendoza.github.io/rspec-tree-runner/demo.gif)
