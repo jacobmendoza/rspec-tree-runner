@@ -1,6 +1,5 @@
 RSpecAnalyzerCommand = require '../lib/rspec-analyzer-command'
 TerminalCommandRunner = require '../lib/terminal-command-runner'
-AstParser = require '../lib/ast-parser'
 
 describe 'RSpecAnalyzerCommand', ->
   [fakePath, emitter, command, terminalCommandRunner] = []
@@ -12,16 +11,12 @@ describe 'RSpecAnalyzerCommand', ->
 
     terminalCommandRunner = new TerminalCommandRunner
 
-    astParser = new AstParser
-
     spyOn(terminalCommandRunner, 'onDataFinished')
 
     spyOn(terminalCommandRunner, 'run')
 
-    spyOn(astParser, 'parse').andReturn([])
-
     command = new RSpecAnalyzerCommand(
-      emitter, terminalCommandRunner, astParser, fakePath)
+      emitter, terminalCommandRunner, fakePath)
 
   describe 'if no analyzer path is supplied', ->
     it 'gets path from filesystem and calls runner', ->

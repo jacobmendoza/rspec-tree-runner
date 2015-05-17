@@ -4,15 +4,8 @@ class AstParser
     if !data then return []
 
     @tree = []
-
-    try
-      jsonObject = JSON.parse(data)
-      @addChildren(@tree, jsonObject)
-    catch error
-      console.log 'Error when parsing the following data'
-      console.log data
-      console.log error
-
+    jsonObject = JSON.parse(data)
+    @addChildren(@tree, jsonObject)
     @tree
 
   addChildren: (result, currentOld) ->
@@ -29,6 +22,8 @@ class AstParser
       }
 
       result.push(newNode)
+
+    return unless currentOld.children
 
     for child in currentOld.children
       nextSubTree = if (newNode == undefined) then result else newNode.children

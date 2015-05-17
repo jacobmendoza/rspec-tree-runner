@@ -1,16 +1,20 @@
 RailsRSpecFinder = require './rails-rspec-finder'
 RSpecAnalyzerCommand = require './rspec-analyzer-command'
 RSpecLauncherCommand = require './rspec-launcher-command'
+TreeBuilder = require './tree-builder'
+
 {Emitter} = require 'event-kit'
 
 module.exports =
 class PluginState
   constructor: (
   emitter = new Emitter,
+  treeBuilder = new TreeBuilder,
   railsRSpecFinder = new RailsRSpecFinder,
   rspecAnalyzerCommand = new RSpecAnalyzerCommand,
   rspecLauncherCommand = new RSpecLauncherCommand) ->
     @emitter = emitter
+    @treeBuilder = treeBuilder
     @railsRSpecFinder = railsRSpecFinder
     @rspecAnalyzerCommand = rspecAnalyzerCommand
     @rspecLauncherCommand = rspecLauncherCommand
@@ -48,8 +52,8 @@ class PluginState
 
       @analyze(@specFileToAnalyze) if (shouldAnalyze)
 
-      @rspecAnalyzerCommand.onDataParsed (asTree) =>
-        @asTree = asTree
+      @rspecAnalyzerCommand.onDataParsed (dataReceived) =>
+        asTree = @treeBuilder.buildFromStandardOutput(dataReceived)
         @emitter.emit 'onTreeBuilt', { asTree: asTree, summary: undefined, stdErrorData: undefined }
 
       @rspecLauncherCommand.onResultReceived (testsResults) =>
@@ -76,35 +80,13 @@ class PluginState
     @rspecLauncherCommand.run(@specFileToAnalyze)
 
   updateTreeWithTests: (results, stdErrorData) ->
-    shouldUpdateTree = results? and results.examples? and @asTree.length > 0
-
-    @updateNode(@asTree[0], results) if shouldUpdateTree
+    asTree = @treeBuilder.updateWithTests(results)
 
     @emitter.emit 'onTreeBuilt', {
-      asTree: @asTree,
+      asTree: asTree,
       summary: if results? then results.summary || undefined else undefined,
       stdErrorData: stdErrorData || ""
     }
-
-  updateNode: (node, testsResults) ->
-    for child in node.children
-      @updateNode(child, testsResults)
-
-    if node.type == 'it' and node.line?
-      for example in testsResults.examples
-        if example.line_number == node.line
-          node.exception = example.exception
-          node.status = example.status
-          node.withReport = if example.status == 'failed' then 'with-report' else ''
-          break
-    else
-      finalStatus = true
-      for child in node.children
-        if child.status == 'failed'
-          finalStatus = false
-          break
-
-      node.status = if finalStatus then 'passed' else 'failed'
 
   onTreeBuilt: (callback) ->
     @emitter.on 'onTreeBuilt', callback

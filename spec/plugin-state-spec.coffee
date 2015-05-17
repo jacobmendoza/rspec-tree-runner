@@ -1,4 +1,5 @@
 PluginState = require '../lib/plugin-state'
+TreeBuilder = require '../lib/tree-builder'
 RailsRSpecFinder = require '../lib/rails-rspec-finder'
 RSpecAnalyzerCommand = require '../lib/rspec-analyzer-command'
 RSpecLauncherCommand = require '../lib/rspec-launcher-command'
@@ -17,6 +18,8 @@ describe 'PluginState', ->
 
     specCommandLauncher = new RSpecLauncherCommand
 
+    treeBuilder = new TreeBuilder
+
     spyOn(rspecAnalyzerCommand, 'run')
 
     spyOn(specCommandLauncher, 'run')
@@ -30,7 +33,7 @@ describe 'PluginState', ->
     railsRSpecFinder = new RailsRSpecFinder(rootFolder, fs)
 
     state = new PluginState(
-      emitter, railsRSpecFinder, rspecAnalyzerCommand, specCommandLauncher)
+      emitter, treeBuilder, railsRSpecFinder, rspecAnalyzerCommand, specCommandLauncher)
 
   describe 'When no editor available', ->
     beforeEach ->
@@ -104,8 +107,9 @@ describe 'PluginState', ->
     describe 'If file does not exist', ->
       beforeEach ->
         fs = { existsSync: -> false }
+        treeBuilder = new TreeBuilder
         railsRSpecFinder = new RailsRSpecFinder(rootFolder, fs)
-        state = new PluginState(emitter, railsRSpecFinder, rspecAnalyzerCommand, specCommandLauncher)
+        state = new PluginState(emitter, treeBuilder, railsRSpecFinder, rspecAnalyzerCommand, specCommandLauncher)
         state.set(editor)
         state.runTests()
 
