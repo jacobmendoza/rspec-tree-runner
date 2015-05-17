@@ -1,5 +1,3 @@
-require 'pp'
-require 'ap'
 require 'json'
 require 'ripper'
 
