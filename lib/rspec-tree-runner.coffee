@@ -19,7 +19,7 @@ module.exports =
       default: 'ruby'
     rspecPathCommand:
       type: 'string'
-      default: 'rspec --format j'
+      default: 'rspec'
     changeToSpecFileOnClick:
       type: 'boolean'
       default: true
