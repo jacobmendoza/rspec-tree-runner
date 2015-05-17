@@ -9,7 +9,7 @@ describe 'RSpecLauncherCommand', ->
 
     spyOn(atom.project, 'getPaths').andReturn(['a', 'b'])
 
-    atom.config.set('rspec-tree-runner.rspecPathCommand', 'rspec --format j')
+    atom.config.set('rspec-tree-runner.rspecPathCommand', 'rspec')
 
     terminalCommandRunner = new TerminalCommandRunner
 
@@ -23,4 +23,4 @@ describe 'RSpecLauncherCommand', ->
 
   it 'runs the command', ->
     expect(terminalCommandRunner.run)
-      .toHaveBeenCalledWith('rspec --format j somefile', 'a')
+      .toHaveBeenCalledWith('rspec --format=json somefile', 'a')

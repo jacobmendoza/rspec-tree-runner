@@ -12,7 +12,7 @@ class RSpecLauncherCommand
 
     rspecCommandPath = atom.config.get('rspec-tree-runner.rspecPathCommand')
 
-    command = "#{rspecCommandPath} #{file}"
+    command = "#{rspecCommandPath} --format=json #{file}"
 
     @terminalCommandRunner.onDataFinished (data) => @parseRSpecResult(data)
 
