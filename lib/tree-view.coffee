@@ -24,15 +24,15 @@ module.exports =
   TreeNode: class TreeNode extends View
     @content: ({text, children, status, withReport}) ->
       if children
-        @li class: 'list-nested-item list-selectable-item', =>
-          @div class: "list-item report-container test-#{status}", =>
-            @span text
-          @ul class: 'list-tree', =>
+        @li class: 'rspec-list-nested-item list-selectable-item', =>
+          @div class: "rspec-list-item report-container test-#{status}", =>
+            @span class: 'rspec-node-text', text
+          @ul class: 'rspec-list-tree', =>
             for child in children
               @subview 'child', new TreeNode(child)
       else
-        @li class: 'list-item list-selectable-item', =>
-          @span text
+        @li class: 'rspec-list-item list-selectable-item', =>
+          @span class: 'rspec-node-text', text
 
     initialize: (item) ->
       @emitter = new Emitter
@@ -75,7 +75,7 @@ module.exports =
       if @item.children
         selected = @hasClass('selected')
         @removeClass('selected')
-        $target = @find('.list-item:first')
+        $target = @find('.rspec-list-item:first')
         left = $target.position().left
         right = $target.children('span').position().left
         width = right - left
@@ -101,7 +101,7 @@ module.exports =
           @div class: 'tree-view-updating-container', =>
             @div class: 'tree-view-updating-spinner'
             @div class: 'tree-view-updating-text', ''
-        @ul class: 'list-tree has-collapsable-children', outlet: 'root'
+        @ul class: 'rspec-list-tree has-collapsable-children', outlet: 'root'
 
     initialize: ->
       super
@@ -112,13 +112,12 @@ module.exports =
       this.find('.tree-view-updating').show()
       e = this.find('.tree-view-updating .tree-view-updating-text')
       e.html("Running tests")
-      elem = this.find('.list-tree.has-collapsable-children')
+      elem = this.find('.rspec-list-tree.has-collapsable-children')
       elem.css("opacity", "0.1")
 
     hideLoading: ->
-      console.log 'hideLoading'
       this.find('.tree-view-updating').hide()
-      elem = this.find('.list-tree.has-collapsable-children')
+      elem = this.find('.rspec-list-tree.has-collapsable-children')
       elem.css("opacity", "1")
 
     deactivate: ->

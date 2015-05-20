@@ -76,11 +76,64 @@
     padding-bottom: 15px;
   }
 
+  // Tree
+
+  .rspec-tree-runner-view-container {
+    width: 210px;
+  }
+
+  ul.rspec-list-tree {
+    margin:0;
+    padding:0;
+    list-style:none;
+  }
+
+  li.rspec-list-nested-item {
+    line-height: 25px;
+    white-space: nowrap;
+    padding-left: 10px;
+  }
+
+  .rspec-list-tree-node-status-sign {
+    font-family: 'Octicons Regular';
+    font-weight: normal;
+    font-style: normal;
+    display: inline-block;
+    line-height: 1;
+    text-decoration: none;
+    font-size: 12px;
+    width: 12px;
+    height: 12px;
+  }
+
+  .rspec-list-tree.has-collapsable-children .rspec-list-nested-item > .rspec-list-item::before {
+    .rspec-list-tree-node-status-sign;
+    content: "\f0a3";
+  }
+
+  .rspec-list-tree.has-collapsable-children .rspec-list-nested-item.collapsed > .rspec-list-item::before {
+    .rspec-list-tree-node-status-sign;
+    content: "\f078";
+  }
+
+  span.rspec-node-text {
+    display: inline-block;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: top;
+    cursor: default;
+  }
+
+  .rspec-list-tree.has-collapsable-children .rspec-list-nested-item.collapsed > .rspec-list-tree {
+    display: none;
+  }
+
   .circle { content: ' \25CF'; font-size: 20px; vertical-align: sub; padding: 3px; position:absolute; right: 20px; }
 
   .test-passed { color: @text-color-success !important; }
   .test-failed { color: @text-color-error !important; }
-  .test-with-report { clear:both; float:right; cursor: pointer; }
+  .test-with-report { position: absolute; right: 10px; cursor: pointer; }
   .test-with-report :before  { .plugin-icons-font-base; content: ' \f076'; font-size: 20px;  }
 
   .tests-summary {
