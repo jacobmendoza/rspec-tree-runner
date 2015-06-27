@@ -17,7 +17,7 @@ class TerminalCommandRunner
     terminal.stdout.on 'data', @onStdOut
     terminal.stderr.on 'data', @onStdErr
 
-    terminalCommand = if @destinyFolder then "cd #{@destinyFolder} && #{@command}\n" else "#{@command}\n"
+    terminalCommand = if @destinyFolder then "cd \"#{@destinyFolder}\" && #{@command}\n" else "#{@command}\n"
 
     console.log "Launching command to terminal: #{terminalCommand}"
 
