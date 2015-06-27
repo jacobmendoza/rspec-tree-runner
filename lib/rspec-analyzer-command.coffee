@@ -22,7 +22,7 @@ module.exports =
       if !rspecAnalyzerScript?
         rspecAnalyzerScript = @path.resolve(__dirname, '../spec-analyzer/spec_analyzer_script.rb')
 
-      command = "#{rubyPath} #{rspecAnalyzerScript} #{file}"
+      command = "#{rubyPath} #{rspecAnalyzerScript} \"#{file}\""
 
       @terminalCommandRunner.onDataFinished (data) => @parseData(data)
 
