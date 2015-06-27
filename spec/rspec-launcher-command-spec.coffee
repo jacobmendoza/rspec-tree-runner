@@ -23,4 +23,4 @@ describe 'RSpecLauncherCommand', ->
 
   it 'runs the command', ->
     expect(terminalCommandRunner.run)
-      .toHaveBeenCalledWith('rspec --format=json somefile', 'a')
+      .toHaveBeenCalledWith('rspec --format=json "somefile"', 'a')

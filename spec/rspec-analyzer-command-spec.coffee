@@ -26,7 +26,7 @@ describe 'RSpecAnalyzerCommand', ->
 
       command.run('somefile')
 
-      expect(terminalCommandRunner.run).toHaveBeenCalledWith('ruby route_to_script/spec_analyzer_script.rb somefile')
+      expect(terminalCommandRunner.run).toHaveBeenCalledWith('ruby route_to_script/spec_analyzer_script.rb "somefile"')
 
   describe 'if analyzer path is supplied', ->
     it 'gets path from configuration and calls runner', ->
@@ -34,4 +34,4 @@ describe 'RSpecAnalyzerCommand', ->
 
       command.run('somefile')
 
-      expect(terminalCommandRunner.run).toHaveBeenCalledWith('ruby custom_route/spec_analyzer_script.rb somefile')
+      expect(terminalCommandRunner.run).toHaveBeenCalledWith('ruby custom_route/spec_analyzer_script.rb "somefile"')
