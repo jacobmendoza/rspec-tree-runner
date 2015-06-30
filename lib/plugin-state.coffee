@@ -23,6 +23,9 @@ class PluginState
     if ((!editor) || (!editor.buffer))
       @setNullState()
     else
+
+      @cursor = editor.cursors[0]
+
       @currentFilePath = editor.buffer.file.path
 
       @currentFilePathExtension = @currentFilePath.split('.').pop();
@@ -63,6 +66,7 @@ class PluginState
     @currentFilePath = null
     @currentCorrespondingFilePath = null
     @specFileToAnalyze = null
+    @specRowToAnalyze = null
     @specFileExists = null
     @specFileToAnalyzeWithoutProjectRoot = null
 
@@ -78,6 +82,17 @@ class PluginState
     @emitter.emit 'onTestsRunning'
 
     @rspecLauncherCommand.run(@specFileToAnalyze)
+
+  runSingleTest: ->
+    return unless @specFileToAnalyze?
+
+    return unless @specFileExists
+
+    @specRowToAnalyze = @cursor.getBufferRow() + 1
+
+    @emitter.emit 'onTestsRunning'
+
+    @rspecLauncherCommand.run(@specFileToAnalyze + ":" + @specRowToAnalyze)
 
   updateTreeWithTests: (results, stdErrorData) ->
     asTree = @treeBuilder.updateWithTests(results)

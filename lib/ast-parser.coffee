@@ -9,7 +9,7 @@ class AstParser
     @tree
 
   addChildren: (result, currentOld) ->
-    types = ['describe', 'context', 'it']
+    types = ['describe', 'context', 'it', 'feature', 'scenario']
 
     if currentOld.type in types
       newNode = {
