@@ -115,6 +115,7 @@ class RSpecTreeView extends View
     @currentState.set(editor)
 
     this.find('.run-tests-hint').hide()
+    this.find('.run-single-test-hint').hide()
     this.find('h3.toggle-file-hint').hide()
 
     if @currentState.currentFilePathExtension != "rb"
@@ -132,6 +133,7 @@ class RSpecTreeView extends View
     this.find('.spec-does-not-exist').hide()
     this.find('.tests-summary').show()
     this.find('.run-tests-hint').show()
+    this.find('.run-single-test-hint').show()
     this.find('h3.toggle-file-hint').show()
 
   setUiForSpecFileNotExists: ->
@@ -153,6 +155,7 @@ class RSpecTreeView extends View
     this.find('.rspec-tree-runner-view-container').hide()
     this.find('.tree-view-title').hide()
     this.find('.run-tests-hint').hide()
+    this.find('.run-single-test-hint').hide()
     this.find('h3.toggle-file-hint').hide()
     return
 
