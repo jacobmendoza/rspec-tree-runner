@@ -11,3 +11,4 @@
   'ctrl-alt-l': 'rspec-tree-runner:toggle'
   'ctrl-alt-q': 'rspec-tree-runner:toggle-spec-file'
   'ctrl-alt-x': 'rspec-tree-runner:run-tests'
+  'ctrl-alt-r': 'rspec-tree-runner:run-single-test'

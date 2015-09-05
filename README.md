@@ -11,7 +11,8 @@ This package finds the corresponding tests for your file, displaying the hierarc
 ## How to use it
 HotKeys:
 - __Ctrl+Alt+L__ - Activate the package
-- __Ctrl+Alt+X__ - Executes test
+- __Ctrl+Alt+X__ - Executes all test
+- __Ctrl+Alt+X__ - Executes single test (current line)
 - __Ctrl+Alt+Q__ - Toggles between files and tests
 
 To activate the package press ctrl-alt-l.

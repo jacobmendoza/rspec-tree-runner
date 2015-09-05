@@ -9,7 +9,6 @@ describe 'TreeBuilder', ->
     treeBuilder = new TreeBuilder(astParser)
     spyOn(atom.notifications, "addError")
 
-
   it 'generates empty tree for null output', ->
     result = treeBuilder.buildFromStandardOutput(null)
     expect(result).toEqual({})
@@ -77,3 +76,46 @@ describe 'TreeBuilder', ->
 
     expect(result.status).toBe('failed')
     expect(result.children[0].status).toBe('failed')
+
+  it 'updates the tree correctly when no tests have been ran in the subtree', ->
+    #The results contain one test that is not included inside root subtree
+    testsResults =
+      examples: [{description: "description", status: "failed", line_number: 99}]
+
+    input =
+      type: "describe"
+      identifier: "root"
+      line: 12
+      children: [{ type:"it", identifier:"something", line: 24, children: undefined }]
+
+    inputString = JSON.stringify(input)
+
+    result = treeBuilder.buildFromStandardOutput(inputString)[0]
+
+    treeBuilder.updateWithTests(testsResults)
+
+    expect(result.status).toBe('undefined')
+    expect(result.children[0].status).toBe('undefined')
+
+  it 'updates the tree correctly when only one passed test has been ran in the subtree', ->
+    testsResults =
+      examples: [{description: "description", status: "passed", line_number: 54}]
+
+    input =
+      type: "describe"
+      identifier: "root"
+      line: 12
+      children: [
+        { type:"it", identifier:"something", line: 24, children: undefined },
+        { type:"it", identifier:"something", line: 54, children: undefined }
+      ]
+
+    inputString = JSON.stringify(input)
+
+    result = treeBuilder.buildFromStandardOutput(inputString)[0]
+
+    treeBuilder.updateWithTests(testsResults)
+
+    expect(result.status).toBe('passed')
+    expect(result.children[0].status).toBe('undefined')
+    expect(result.children[1].status).toBe('passed')

@@ -27,6 +27,7 @@ module.exports =
         @updateNode(child, testsResults)
 
       if node.type == 'it' and node.line?
+        node.status = 'undefined'
         for example in testsResults.examples
           if example.line_number == node.line
             node.exception = example.exception
@@ -34,10 +35,13 @@ module.exports =
             node.withReport = if example.status == 'failed' then 'with-report' else ''
             break
       else
-        finalStatus = true
+        finalStatus = 'undefined'
+
         for child in node.children
           if child.status == 'failed'
-            finalStatus = false
+            finalStatus = 'failed'
             break
+          else if child.status == 'passed' and finalStatus == 'undefined'
+            finalStatus = 'passed'
 
-        node.status = if finalStatus then 'passed' else 'failed'
+        node.status = finalStatus

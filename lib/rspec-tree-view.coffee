@@ -30,6 +30,7 @@ class RSpecTreeView extends View
             @div class: 'number', '-'
             @div class: 'text', 'pending'
       @h3 class: 'run-tests-hint hint', ''
+      @h3 class: 'run-single-test-hint hint', ''
       @h3 class: 'toggle-file-hint hint', ''
       @div class: 'rspec-tree-runner-view-container'
 
@@ -114,6 +115,7 @@ class RSpecTreeView extends View
     @currentState.set(editor)
 
     this.find('.run-tests-hint').hide()
+    this.find('.run-single-test-hint').hide()
     this.find('h3.toggle-file-hint').hide()
 
     if @currentState.currentFilePathExtension != "rb"
@@ -131,6 +133,7 @@ class RSpecTreeView extends View
     this.find('.spec-does-not-exist').hide()
     this.find('.tests-summary').show()
     this.find('.run-tests-hint').show()
+    this.find('.run-single-test-hint').show()
     this.find('h3.toggle-file-hint').show()
 
   setUiForSpecFileNotExists: ->
@@ -152,6 +155,7 @@ class RSpecTreeView extends View
     this.find('.rspec-tree-runner-view-container').hide()
     this.find('.tree-view-title').hide()
     this.find('.run-tests-hint').hide()
+    this.find('.run-single-test-hint').hide()
     this.find('h3.toggle-file-hint').hide()
     return
 
@@ -190,6 +194,11 @@ class RSpecTreeView extends View
 
     @currentState.runTests()
 
+  runSingleTest: ->
+    return unless @currentState.specFileExists
+
+    @currentState.runSingleTest()
+
   toggleSpecFile: ->
     atom.workspace.open(@currentState.currentCorrespondingFilePath) if @currentState.currentCorrespondingFilePath?
 
@@ -224,13 +233,16 @@ class RSpecTreeView extends View
   prepareKeyStrokesText: ->
     toggleSpecFileKeyBindings = atom.keymaps.findKeyBindings({command:'rspec-tree-runner:toggle-spec-file' })
     runTestsKeyBindings = atom.keymaps.findKeyBindings({command:'rspec-tree-runner:run-tests' })
-    
+    runSingleTestKeyBindings = atom.keymaps.findKeyBindings({command:'rspec-tree-runner:run-single-test' })
+
     toggleSpecFileKeyStroke = if (toggleSpecFileKeyBindings and toggleSpecFileKeyBindings.length > 0) then toggleSpecFileKeyBindings[0].keystrokes else 'not def'
 
     runTestsKeyStroke = if (runTestsKeyBindings and runTestsKeyBindings.length > 0) then runTestsKeyBindings[0].keystrokes else 'not def'
+    runSingleTestKeyStroke = if (runSingleTestKeyBindings and runSingleTestKeyBindings.length > 0) then runSingleTestKeyBindings[0].keystrokes else 'not def'
 
-    this.find('.toggle-file-hint').html("Press #{toggleSpecFileKeyStroke} to toggle/create")
+    this.find('h3.toggle-file-hint').html("Press #{toggleSpecFileKeyStroke} to toggle/create")
     this.find('h3.run-tests-hint').html("Press #{runTestsKeyStroke} to run tests")
+    this.find('h3.run-single-test-hint').html("Press #{runSingleTestKeyStroke} to run a single test")
 
   getCurrentBuffer: (editor) ->
     try

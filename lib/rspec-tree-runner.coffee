@@ -48,6 +48,8 @@ module.exports =
 
     @subscriptions.add atom.commands.add 'atom-workspace', 'rspec-tree-runner:run-tests': => @mainView.runTests()
 
+    @subscriptions.add atom.commands.add 'atom-workspace', 'rspec-tree-runner:run-single-test': => @mainView.runSingleTest()
+
   deactivate: ->
     @modalPanel.destroy()
     @subscriptions.dispose()
