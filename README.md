@@ -39,4 +39,4 @@ This package wouldn't have been possible without the help of the [Atom Discussio
 
 ## Contributors
 
-- Thanks to José Morais [@jmorais](https://github.com/jmorais) who kindly provided the feature that allow users to run a single test.
+- Thanks to José Morais ([@jmorais](https://github.com/jmorais)) who kindly provided the feature that allow users to run a single test.
