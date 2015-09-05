@@ -23,7 +23,6 @@ class PluginState
     if ((!editor) || (!editor.buffer))
       @setNullState()
     else
-
       @cursor = editor.cursors[0]
 
       @currentFilePath = editor.buffer.file.path

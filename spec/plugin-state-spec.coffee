@@ -66,7 +66,10 @@ describe 'PluginState', ->
   describe 'When spec file is supplied', ->
     specFile = '/Users/X/Repo/project-folder/spec/some_file_spec.rb'
     correspondingFile = '/Users/X/Repo/project-folder/app/some_file.rb'
-    editor = { buffer: { file: { path: specFile } } }
+    editor = {
+      buffer: { file: { path: specFile } },
+      cursors: [{}]
+    }
 
     beforeEach ->
       state.set(editor)
@@ -85,7 +88,10 @@ describe 'PluginState', ->
   describe 'When normal file is supplied', ->
     normalFile = '/Users/X/Repo/project-folder/app/some_file.rb'
     correspondingFile = '/Users/X/Repo/project-folder/spec/some_file_spec.rb'
-    editor = { buffer: { file: { path: normalFile } } }
+    editor = {
+      buffer: { file: { path: normalFile } },
+      cursors: [{}]
+    }
 
     describe 'If file exists', ->
       beforeEach ->

@@ -116,8 +116,6 @@ describe 'TreeBuilder', ->
 
     treeBuilder.updateWithTests(testsResults)
 
-    debugger
-
     expect(result.status).toBe('passed')
     expect(result.children[0].status).toBe('undefined')
     expect(result.children[1].status).toBe('passed')
