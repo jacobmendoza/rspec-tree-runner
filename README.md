@@ -36,3 +36,7 @@ This package wouldn't have been possible without the help of the [Atom Discussio
 - [atom-rspec](https://github.com/fcoury/atom-rspec) by Felipe Coury
 - [atom-rails-rspec](https://github.com/wangyuhere/atom-rails-rspec) by Yu Wang
 - [atom-spec-tree-view](https://github.com/hokaccha/atom-spec-tree-view) by Kazuhito Hokamura
+
+## Contributors
+
+- Thanks to José Morais [@jmorais](https://github.com/jmorais) who kindly provided the feature that allow users to run a single test.
