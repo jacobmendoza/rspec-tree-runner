@@ -31,7 +31,6 @@ describe 'RSpecLauncherCommand', ->
       terminalCommandRunner)
 
     rspecLauncherCommand.run('somefile')
-    debugger
     rspecLauncherCommand.parseRSpecResult( { stdOutData: '{}', stdErrorData: '' })
 
   it 'runs the command', ->
