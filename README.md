@@ -36,6 +36,8 @@ rspec-tree-runner relies on Ripper, a Ruby script parser. In this case, we use i
 
 When executing the tests, the package calls the RSpec test runner using the json formatter, because it makes easier processing the results. The RSpec test runner, after executing the file, returns all the tests, with the status (passed, failed or pending) and the line of the test that has been executed.
 
+![alt tag](https://raw.github.com/jacobmendoza/rspec-tree-runner/master/process.png)
+
 We match all this information with the tree that we built before, using the line number as the identifier for the node.
 
 ## Big thanks to…
