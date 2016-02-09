@@ -30,6 +30,14 @@ I would really love to hear feedback about the features or the code, and I reall
 * Areas without appropiate tests.
 * Design issues.
 
+## How does it work?
+
+rspec-tree-runner relies on Ripper, a Ruby script parser. In this case, we use it to read the spec file and convert it into a symbolic expression tree (a binary tree). When you open a spec file, rspec-tree-runner calls a small Ruby script that generates the expression, and transforms it to a different kind of tree, easier to process in Atom and that contains information specific to a spec file (the kind of block, the line number, the identifier, etc) as opposed to the output of Ripper, which is general to any Ruby script.
+
+When executing the tests, the package calls the RSpec test runner using the json formatter, because it makes easier processing the results. The RSpec test runner, after executing the file, returns all the tests, with the status (passed, failed or pending) and the line of the test that has been executed.
+
+We match all this information with the tree that we built before, using the line number as the identifier for the node.
+
 ## Big thanks to…
 This package wouldn't have been possible without the help of the [Atom Discussion](https://discuss.atom.io/) colleagues. Also the following plugins and authors have been a big inspiration, and their code has been an important help:
 
