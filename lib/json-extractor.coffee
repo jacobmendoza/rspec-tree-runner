@@ -9,7 +9,7 @@ module.exports =
   # invalid.
   #
   # Despite it seems reasonable think that an implementation based
-  # on a queue could be more efficient, I'm choosing the easiest on
+  # on a queue could be more efficient, I'm choosing the easiest solution
   # for now, trying to avoid some unexpected edge cases.
   #
   # As the JSON of the RSpec runner should be the first in the output,
