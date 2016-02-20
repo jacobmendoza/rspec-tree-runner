@@ -1,15 +1,15 @@
 TerminalCommandRunner = require './terminal-command-runner'
-JsonSanitizer = require './json-sanitizer'
+JsonExtractor = require './json-extractor'
 {Emitter} = require 'event-kit'
 
 module.exports =
 class RSpecLauncherCommand
   constructor: (
     emitter = new Emitter,
-    jsonSanitizer = new JsonSanitizer,
+    jsonExtractor = new JsonExtractor,
     terminalCommandRunner = new TerminalCommandRunner) ->
     @emitter = emitter
-    @jsonSanitizer = jsonSanitizer
+    @jsonExtractor = jsonExtractor
     @terminalCommandRunner = terminalCommandRunner
 
   run: (file) ->
@@ -28,8 +28,7 @@ class RSpecLauncherCommand
 
   parseRSpecResult: (data) ->
     if !!data.stdOutData
-      sanitizedData = @jsonSanitizer.sanitize(data.stdOutData)
-      jsonData = JSON.parse(sanitizedData)
+      jsonData = @jsonExtractor.extract(data.stdOutData)
     else
       jsonData = {}
 

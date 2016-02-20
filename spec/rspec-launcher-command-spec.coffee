@@ -1,5 +1,5 @@
 RSpecLauncherCommand = require '../lib/rspec-launcher-command'
-JsonSanitizer = require '../lib/json-sanitizer'
+JsonSanitizer = require '../lib/json-extractor'
 TerminalCommandRunner = require '../lib/terminal-command-runner'
 
 describe 'RSpecLauncherCommand', ->
@@ -23,7 +23,9 @@ describe 'RSpecLauncherCommand', ->
 
     spyOn(terminalCommandRunner, 'onDataFinished')
 
-    spyOn(jsonSanitizer, 'sanitize').andReturn('{}')
+    spyOn(jsonSanitizer, 'extract').andReturn({})
+
+    spyOn(emitter, 'emit')
 
     rspecLauncherCommand = new RSpecLauncherCommand(
       emitter,
@@ -38,5 +40,9 @@ describe 'RSpecLauncherCommand', ->
       .toHaveBeenCalledWith('rspec --format=json \"somefile\"', 'a')
 
   it 'calls the sanitizer when parsing data', ->
-    expect(jsonSanitizer.sanitize)
+    expect(jsonSanitizer.extract)
       .toHaveBeenCalledWith('{}')
+
+  it 'emits the result', ->
+      expect(emitter.emit)
+        .toHaveBeenCalledWith('onResultReceived', {result: {}, stdErrorData: ''})
