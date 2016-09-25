@@ -32,8 +32,7 @@ describe 'PluginState', ->
 
     railsRSpecFinder = new RailsRSpecFinder(rootFolder, fs)
 
-    state = new PluginState(
-      emitter, treeBuilder, railsRSpecFinder, rspecAnalyzerCommand, specCommandLauncher)
+    state = new PluginState(treeBuilder, railsRSpecFinder, rspecAnalyzerCommand, specCommandLauncher)
 
   describe 'When no editor available', ->
     beforeEach ->
@@ -115,7 +114,7 @@ describe 'PluginState', ->
         fs = { existsSync: -> false }
         treeBuilder = new TreeBuilder
         railsRSpecFinder = new RailsRSpecFinder(rootFolder, fs)
-        state = new PluginState(emitter, treeBuilder, railsRSpecFinder, rspecAnalyzerCommand, specCommandLauncher)
+        state = new PluginState(treeBuilder, railsRSpecFinder, rspecAnalyzerCommand, specCommandLauncher)
         state.set(editor)
         state.runTests()
 
