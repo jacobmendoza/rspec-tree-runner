@@ -15,8 +15,7 @@ describe 'RSpecAnalyzerCommand', ->
 
     spyOn(terminalCommandRunner, 'run')
 
-    command = new RSpecAnalyzerCommand(
-      emitter, terminalCommandRunner, fakePath)
+    command = new RSpecAnalyzerCommand(terminalCommandRunner, fakePath)
 
   describe 'if no analyzer path is supplied', ->
     it 'gets path from filesystem and calls runner', ->
