@@ -11,8 +11,6 @@ describe 'RSpecAnalyzerCommand', ->
 
     terminalCommandRunner = new TerminalCommandRunner
 
-    spyOn(terminalCommandRunner, 'onDataFinished')
-
     spyOn(terminalCommandRunner, 'run')
 
     command = new RSpecAnalyzerCommand(terminalCommandRunner, fakePath)

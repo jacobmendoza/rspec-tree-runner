@@ -16,8 +16,6 @@ describe 'RSpecLauncherCommand', ->
 
     spyOn(terminalCommandRunner, 'run')
 
-    spyOn(terminalCommandRunner, 'onDataFinished')
-
     spyOn(jsonSanitizer, 'extract').andReturn({})
 
     rspecLauncherCommand = new RSpecLauncherCommand(
