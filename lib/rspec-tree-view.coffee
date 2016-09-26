@@ -209,24 +209,24 @@ class RSpecTreeView extends View
       @panel.show()
 
   attach: ->
-    # @rspecTestDetails = new RSpecTestDetails
-    #
-    # @panel = atom.workspace.addRightPanel(item: this, visible: false)
-    #
-    # @prepareKeyStrokesText()
-    #
-    # @disposables.add new Disposable =>
-    #   @panel.destroy()
-    #   @panel = null
-    #
-    # @disposables.add new Disposable =>
-    #   @rspecTestDetails.panel.destroy()
-    #   @rspecTestDetails.panel = null
-    #
-    # @wireEventsForEditor(atom.workspace.getActiveTextEditor())
-    #
-    # @disposables.add atom.workspace.onDidChangeActivePaneItem (editor) =>
-    #   @wireEventsForEditor(editor)
+    @rspecTestDetails = new RSpecTestDetails
+
+    @panel = atom.workspace.addRightPanel(item: this, visible: false)
+
+    @prepareKeyStrokesText()
+
+    @disposables.add new Disposable =>
+      @panel.destroy()
+      @panel = null
+
+    @disposables.add new Disposable =>
+      @rspecTestDetails.panel.destroy()
+      @rspecTestDetails.panel = null
+
+    @wireEventsForEditor(atom.workspace.getActiveTextEditor())
+
+    @disposables.add atom.workspace.onDidChangeActivePaneItem (editor) =>
+      @wireEventsForEditor(editor)
 
   prepareKeyStrokesText: ->
     toggleSpecFileKeyBindings = atom.keymaps.findKeyBindings({command:'rspec-tree-runner:toggle-spec-file' })
