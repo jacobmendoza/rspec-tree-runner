@@ -1,4 +1,4 @@
-RspecTreeRunnerView = require '../lib/rspec-tree-runner-view'
+RspecTreeRunnerView = require '../lib/views/rspec-tree-runner-view'
 
 describe "RspecTreeRunnerView", ->
   it "has one valid test", ->

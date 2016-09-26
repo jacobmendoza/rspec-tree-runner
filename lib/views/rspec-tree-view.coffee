@@ -2,9 +2,9 @@
 {View, $$} = require 'atom-space-pen-views'
 {TreeView} = require './tree-view'
 
-PluginState = require './plugin-state'
+PluginState = require '../plugin-state'
 RSpecTestDetails = require './rspec-test-details'
-RailsRSpecFinder = require './rails-rspec-finder'
+RailsRSpecFinder = require '../rails-rspec-finder'
 
 module.exports =
 class RSpecTreeView extends View
