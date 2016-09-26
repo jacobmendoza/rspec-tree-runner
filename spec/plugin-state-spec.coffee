@@ -24,8 +24,6 @@ describe 'PluginState', ->
 
     spyOn(specCommandLauncher, 'run')
 
-    spyOn(specCommandLauncher, 'onResultReceived')
-
     atom.config.set('rspec-tree-runner.specDefaultPath', 'spec')
 
     atom.config.set('rspec-tree-runner.specSearchPaths', ['spec', 'fast_spec'])

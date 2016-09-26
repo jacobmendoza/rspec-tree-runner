@@ -3,14 +3,9 @@ JsonSanitizer = require '../lib/json-extractor'
 TerminalCommandRunner = require '../lib/terminal-command-runner'
 
 describe 'RSpecLauncherCommand', ->
-  [emitter, terminalCommandRunner, rspecLauncherCommand, jsonSanitizer] = []
+  [terminalCommandRunner, rspecLauncherCommand, jsonSanitizer] = []
 
   beforeEach ->
-    emitter = {
-      emit: ->
-        undefined
-    }
-
     spyOn(atom.project, 'getPaths').andReturn(['a', 'b'])
 
     atom.config.set('rspec-tree-runner.rspecPathCommand', 'rspec')
@@ -25,10 +20,7 @@ describe 'RSpecLauncherCommand', ->
 
     spyOn(jsonSanitizer, 'extract').andReturn({})
 
-    spyOn(emitter, 'emit')
-
     rspecLauncherCommand = new RSpecLauncherCommand(
-      emitter,
       jsonSanitizer,
       terminalCommandRunner)
 
@@ -43,6 +35,6 @@ describe 'RSpecLauncherCommand', ->
     expect(jsonSanitizer.extract)
       .toHaveBeenCalledWith('{}')
 
-  it 'emits the result', ->
-      expect(emitter.emit)
-        .toHaveBeenCalledWith('onResultReceived', {result: {}, stdErrorData: ''})
+  # it 'emits the result', ->
+  #     expect(emitter.emit)
+  #       .toHaveBeenCalledWith('onResultReceived', {result: {}, stdErrorData: ''})
