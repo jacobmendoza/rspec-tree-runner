@@ -223,11 +223,6 @@ class RSpecTreeView extends View
       @rspecTestDetails.panel.destroy()
       @rspecTestDetails.panel = null
 
-    @wireEventsForEditor(atom.workspace.getActiveTextEditor())
-
-    @disposables.add atom.workspace.onDidChangeActivePaneItem (editor) =>
-      @wireEventsForEditor(editor)
-
   prepareKeyStrokesText: ->
     toggleSpecFileKeyBindings = atom.keymaps.findKeyBindings({command:'rspec-tree-runner:toggle-spec-file' })
     runTestsKeyBindings = atom.keymaps.findKeyBindings({command:'rspec-tree-runner:run-tests' })
@@ -247,12 +242,6 @@ class RSpecTreeView extends View
       editor.getBuffer()
     catch error
       undefined
-
-  wireEventsForEditor: (editor) ->
-    if !editor?
-      @setUiForNonRubyFileMessage()
-    else
-      @handleEditorEvents(editor)
 
   detach: ->
     @disposables.dispose()
