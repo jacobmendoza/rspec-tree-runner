@@ -35,39 +35,12 @@ class RSpecTreeView extends View
       @div class: 'rspec-tree-runner-view-container'
 
   initialize:  ->
-    @currentState = new PluginState
-
-    @railsRSpecFinder = new RailsRSpecFinder
-
-    @currentState.on 'onTreeBuilt', (result) =>
-      @setStdErrorNotification(result)
-      @redrawTree(result.asTree, result)
-
-    @currentState.on('onSpecFileBeingAnalyzed', => @treeView.displayLoading('Spec file being analyzed') if @treeView?)
-
-    @currentState.on 'onTestsRunning', => @treeView.displayLoading('RSpec running tests') if @treeView?
-
     @treeView = new TreeView
 
     @treeView.onReportClicked ({item}) =>
       if item.exception?
         @rspecTestDetails.setVisible(true)
         @rspecTestDetails.setContent(item.exception)
-
-    @treeView.onSelect ({item}) =>
-      return unless @currentState?
-
-      return unless (@currentState.specFileToAnalyze? and @currentState.specFileExists)
-
-      return unless atom.config.get('rspec-tree-runner.changeToSpecFileOnClick')
-
-      atom.workspace.open(@currentState.specFileToAnalyze)
-
-      position = [item.line - 1, 0]
-      editor = atom.workspace.getActiveTextEditor()
-      editor.scrollToBufferPosition(position, center: true)
-      editor.setCursorBufferPosition(position)
-      editor.moveToFirstCharacterOfLine()
 
     this.find('.rspec-tree-runner-view-container').append(@treeView)
 
@@ -107,25 +80,10 @@ class RSpecTreeView extends View
           pending: testsResults.summary.pending_count
         })
 
-  setCurrentAndCorrespondingFile: (editor) ->
-    this.show()
-
-    @currentState.set(editor)
-
+  setInitialUI: ->
     this.find('.run-tests-hint').hide()
     this.find('.run-single-test-hint').hide()
     this.find('h3.toggle-file-hint').hide()
-
-    if @currentState.currentFilePathExtension != "rb"
-      @setUiForNonRubyFileMessage()
-      return
-
-    @setUiForRubyFile()
-
-    if @currentState.specFileExists
-      @setUiForSpecFileExists()
-    else
-      @setUiForSpecFileNotExists()
 
   setUiForSpecFileExists: ->
     this.find('.spec-does-not-exist').hide()
@@ -141,10 +99,10 @@ class RSpecTreeView extends View
     this.find('.tests-summary').hide()
     @treeView.hide if @treeView?
 
-  setUiForRubyFile: ->
+  setUiForRubyFile: (fileName) ->
     this.find('.not-ruby-file').hide()
     this.find('.rspec-tree-runner-view-container').show()
-    @changeFile(@currentState.currentFileName)
+    @changeFile(fileName)
 
   setUiForNonRubyFileMessage: ->
     this.find('.not-ruby-file').show()
@@ -171,34 +129,11 @@ class RSpecTreeView extends View
     this.find('.tests-summary-failed .number').html(summary.failed)
     this.find('.tests-summary-pending .number').html(summary.pending)
 
-  handleEditorEvents: (editor) ->
-    @currentEditorSubscriptions?.dispose()
-    @currentEditorSubscriptions = new CompositeDisposable
+  displayLoadingMessage: (text) ->
+    @treeView.displayLoading(text) if @treeView?
 
-    currentBuffer = @getCurrentBuffer(editor)
-
-    if currentBuffer?
-      @currentEditorSubscriptions.add currentBuffer.onDidSave =>
-        if @railsRSpecFinder.isSpec(editor.getBuffer().file.path)
-          @setCurrentAndCorrespondingFile(editor)
-
-    if editor?
-      @setCurrentAndCorrespondingFile(editor)
-    else
-      this.hide()
-
-  runTests: ->
-    return unless @currentState.specFileExists
-
-    @currentState.runTests()
-
-  runSingleTest: ->
-    return unless @currentState.specFileExists
-
-    @currentState.runSingleTest()
-
-  toggleSpecFile: ->
-    atom.workspace.open(@currentState.currentCorrespondingFilePath) if @currentState.currentCorrespondingFilePath?
+  toggleSpecFile: (destinationFileName) ->
+    atom.workspace.open(destinationFileName) if destinationFileName?
 
   toggle: ->
     return unless @panel
@@ -236,12 +171,6 @@ class RSpecTreeView extends View
     this.find('h3.toggle-file-hint').html("Press #{toggleSpecFileKeyStroke} to toggle/create")
     this.find('h3.run-tests-hint').html("Press #{runTestsKeyStroke} to run tests")
     this.find('h3.run-single-test-hint').html("Press #{runSingleTestKeyStroke} to run a single test")
-
-  getCurrentBuffer: (editor) ->
-    try
-      editor.getBuffer()
-    catch error
-      undefined
 
   detach: ->
     @disposables.dispose()
