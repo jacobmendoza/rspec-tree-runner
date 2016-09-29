@@ -4,7 +4,7 @@
 
 PluginState = require '../plugin-state'
 RSpecTestDetails = require './rspec-test-details'
-RailsRSpecFinder = require '../rails-rspec-finder'
+# RailsRSpecFinder = require '../rails-rspec-finder'
 
 module.exports =
 class RSpecTreeView extends View
