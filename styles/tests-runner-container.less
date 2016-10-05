@@ -1,0 +1,63 @@
+@import 'base.less';
+
+.tests-runner-container{
+  padding: 0px;
+  margin: 0px;
+  padding-top: 15px;
+
+  .test-text{
+     overflow: hidden;
+      text-overflow: ellipsis;
+      display: inline-block;
+      white-space: nowrap;
+      width: 200px;
+      padding-top: 9px;
+      padding-left: 20px;
+  }
+
+  .test-passed { color: @text-color-success !important; }
+  .test-failed { color: @text-color-error !important; }
+  .test-with-report { position: absolute; right: 0px; cursor: pointer; display: inline-block; padding-top:2px; }
+  .test-with-report :before  { .plugin-icons-font-base; content: ' \f076'; font-size: 20px;  }
+
+  /* the tree node's style */
+  .tree-view {
+    overflow-y: hidden;
+    padding: 9px 0 4px 6px;
+  }
+
+  .tree-view_item {
+    /* immediate child of .tree-view, for styling convenience */
+  }
+
+  /* style for the children nodes container */
+  .tree-view_children {
+    margin-left: 2px;
+  }
+
+  .tree-view_children-collapsed {
+    height: 0px;
+  }
+
+  .tree-view_arrow {
+    cursor: pointer;
+    margin-right: 6px;
+    display: inline-block;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+  .tree-view_arrow:after {
+    content: '▾';
+  }
+
+  /* rotate the triangle to close it */
+  .tree-view_arrow-collapsed {
+    -webkit-transform: rotate(-90deg);
+    -moz-transform: rotate(-90deg);
+    -ms-transform: rotate(-90deg);
+    transform: rotate(-90deg);
+  }
+}

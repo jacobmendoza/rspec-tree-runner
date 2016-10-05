@@ -1,8 +1,8 @@
-// The ui-variables file is provided by base themes provided by Atom.
-//
-// See https://github.com/atom/atom-dark-ui/blob/master/styles/ui-variables.less
-// for a full listing of what's available.
-@import "ui-variables";
+@import 'ui-variables';
+@import 'base.less';
+@import 'panel-header.less';
+@import 'tests-runner-container.less';
+@import 'loading-indicator.less';
 
 .rspec-test-details {
 
@@ -28,52 +28,25 @@
   }
 }
 
+//Main container
 .rspec-tree-runner {
-  .plugin-font-base {
-    font-family: "Helvetica Neue", Helvetica;
-    font-weight: 200;
-    text-align:center;
-  }
-
-  .plugin-icons-font-base {
-    font-family: 'Octicons Regular';
-    font-weight: normal;
-    font-style: normal;
-    text-shadow: none;
-  }
-
   width: 300px;
   height: 100%;
-  padding: 20px;
   overflow: scroll;
+  // background-color: #f0f0f0;
 
-  h2 {
-    font-size:24px;
-    .plugin-font-base;
+  .subContainer {
+    padding: 20px;
   }
 
-  h3 {
-    font-size:14px;
-    .plugin-font-base;
-  }
-
-  h3.hint {
-    .plugin-font-base;
-    font-size:12px;
-    text-align: left;
-    color: @text-color-info;
-  }
-
-  h3.hint:before{
-    .plugin-icons-font-base;
-    content: ' \f02c';
-    font-size: 12px;
-    margin-right: 5px;
-  }
-
-  h3.toggle-file-hint {
-    border-bottom: 1px solid #888;
-    padding-bottom: 15px;
+  .package-header {
+    width: 100%;
+    heigth:40px;
+    background-color: #DDD;
+    padding: 10px;
+    border-bottom: 1px solid #BBB;
+    font-size: 15px;
+    font-weight: lighter;
   }
 
   // Tree
@@ -131,11 +104,6 @@
 
   .circle { content: ' \25CF'; font-size: 20px; vertical-align: sub; padding: 3px; position:absolute; right: 20px; }
 
-  .test-passed { color: @text-color-success !important; }
-  .test-failed { color: @text-color-error !important; }
-  .test-with-report { position: absolute; right: 10px; cursor: pointer; display: inline-block; }
-  .test-with-report :before  { .plugin-icons-font-base; content: ' \f076'; font-size: 20px;  }
-
   .tests-summary {
     border-bottom: 1px solid #888;
     font-weight: bold;
@@ -175,46 +143,6 @@
       width: 100%;
       letter-spacing: -3px;
     }
-  }
-
-  .tree-view-updating {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    display: none;
-
-    .tree-view-updating-spinner {
-      background-image: url(images/octocat-spinner-128.gif);
-      background-repeat: no-repeat;
-      background-size: cover;
-      background-position: center center;
-      background-size: 64px 64px;
-      height: 84px;
-    }
-
-    .tree-view-updating-text {
-      .plugin-font-base;
-
-      font-size:16px;
-      text-align: center;
-    }
-  }
-
-  h3.tree-view-title:before{
-    .plugin-icons-font-base;
-    content: ' \f011';
-    font-size: 15px;
-    margin-right: 10px;
-  }
-
-  h3.tree-view-title {
-    text-align: left;
-    background: transparent;
-    padding-left: 0px;
-    margin: 0;
-    padding-bottom: 10px;
-    margin-bottom: 5px;
-    border-bottom: 1px solid #888;
   }
 
   .rspec-tree-runner-tree-view {

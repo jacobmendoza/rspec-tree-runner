@@ -16,6 +16,7 @@
     "atom-space-pen-views": "^2.0.4",
     "event-kit": "^1.1.0",
     "react": "^15.3.2",
-    "react-dom": "^15.3.2"
+    "react-dom": "^15.3.2",
+    "react-treeview": "^0.4.5"
   }
 }
