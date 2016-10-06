@@ -16,7 +16,11 @@ const PanelHeader = React.createClass({
 const MainContainer = React.createClass({
   getInitialState() {
     return {
-      file: { name:'', isValidSpecFile: () => false },
+      file: {
+        name:'',
+        isSpecFile: () => false,
+        isRubyFile: () => false
+      },
       asTree: [],
       stdErrorData: undefined,
       summary: undefined,
@@ -36,7 +40,7 @@ const MainContainer = React.createClass({
       packageBody = <TestsContainer state={this.state}/>;
     }
 
-    if (this.state.file.isValidSpecFile()) {
+    if (this.state.file.isRubyFile() && this.state.file.isSpecFile()) {
       return (
         <div className="rspec-tree-runner">
           <div className='package-header'>rspec-tree-runner</div>
@@ -53,7 +57,7 @@ const MainContainer = React.createClass({
       return(
         <div className="rspec-tree-runner">
           <div className='package-header'>rspec-tree-runner</div>
-          <WrongFile/>
+          <WrongFile file={this.state.file}/>
         </div>
       );
     }

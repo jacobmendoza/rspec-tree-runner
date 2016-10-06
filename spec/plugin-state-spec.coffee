@@ -60,7 +60,7 @@ describe 'PluginState', ->
 
     xit 'sets a correct state', ->
       expect(state.file.path).toBe(specFile)
-      expect(state.file.isValidSpecFile()).toBe(true)
+      expect(state.file.isSpecFile()).toBe(true)
       expect(rspecAnalyzerCommand.run).toHaveBeenCalledWith(specFile)
 
     xit 'runs the analyze command', ->
@@ -83,7 +83,7 @@ describe 'PluginState', ->
 
       xit 'sets a correct state', ->
         expect(state.file.path).toBe(normalFile)
-        expect(state.file.isValidSpecFile()).toBe(false)
+        expect(state.file.isSpecFile()).toBe(false)
 
       xit 'runs tests over the correct file', ->
         expect(specCommandLauncher.run).not.toHaveBeenCalled()

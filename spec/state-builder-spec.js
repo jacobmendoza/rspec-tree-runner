@@ -12,7 +12,7 @@ describe('StateBuilder', () => {
     const result = sut.buildDefault();
 
     expect(result.file.name).toBe('');
-    expect(result.file.isValidSpecFile()).toBeFalsy();
+    expect(result.file.isSpecFile()).toBeFalsy();
     expect(result.asTree).toEqual([]);
     expect(result.stdErrorData).not.toBeDefined();
     expect(result.summary).not.toBeDefined();
