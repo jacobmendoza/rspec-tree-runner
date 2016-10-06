@@ -36,4 +36,19 @@ describe('StateBuilder', () => {
     expect(newState.summary).toBe('summary');
     expect(newState.loading).toBeTruthy();
   });
+
+  it('cleans previous error when building a new state', () => {
+    const initialState = sut.buildDefault();
+
+    const errorState = sut
+      .from(initialState)
+      .withSpecParsingError('error')
+      .build();
+
+    const newState = sut
+      .from(errorState)
+      .build();
+
+    expect(newState.parsingSpecError).not.toBeDefined();
+  });
 });

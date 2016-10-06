@@ -24,6 +24,18 @@ const MainContainer = React.createClass({
     };
   },
   render() {
+    let packageBody;
+    if (this.state.parsingSpecError) {
+      packageBody = (
+        <div>
+          <h2>Oops, something happened while reading the spec</h2>
+          <h3>Error parsing the spec file</h3>
+        </div>
+      );
+    } else {
+      packageBody = <TestsContainer state={this.state}/>;
+    }
+
     if (this.state.file.isValidSpecFile()) {
       return (
         <div className="rspec-tree-runner">
@@ -32,7 +44,7 @@ const MainContainer = React.createClass({
             <PanelHeader fileName={this.state.file.name}/>
             <TestsSummary summary={this.state.summary}/>
             <HintsBlock/>
-            <TestsContainer state={this.state}/>
+            {packageBody}
           </div>
         </div>
       );
