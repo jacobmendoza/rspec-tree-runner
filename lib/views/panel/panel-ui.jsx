@@ -36,6 +36,13 @@ const MainContainer = React.createClass({
           <h3>Error parsing the spec file</h3>
         </div>
       );
+    } else if (this.state.rspecExecutionError) {
+      packageBody = (
+        <div>
+          <h2>Oops, something happened while executing the spec</h2>
+          <h3>Error when using RSpec over this file</h3>
+        </div>
+      );
     } else {
       packageBody = <TestsContainer state={this.state}/>;
     }

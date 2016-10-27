@@ -25,14 +25,16 @@ describe('StateBuilder', () => {
       .from(initialState)
       .withFile({name: 'some_name_spec.rb'})
       .withAsTree(['tree'])
-      .withStdErrorData('error')
+      .withSpecParsingError('error')
+      .withRSpecExecutionError('test error')
       .withSummary('summary')
       .loading(true)
       .build();
 
     expect(newState.file.name).toBe('some_name_spec.rb');
     expect(newState.asTree).toEqual(['tree']);
-    expect(newState.stdErrorData).toBe('error');
+    expect(newState.parsingSpecError).toBe('error');
+    expect(newState.rspecExecutionError).toBe('test error');
     expect(newState.summary).toBe('summary');
     expect(newState.loading).toBeTruthy();
   });
