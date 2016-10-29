@@ -36,7 +36,7 @@ const MainContainer = React.createClass({
     };
   },
   render() {
-    let packageBody;
+    let packageBody, executionErrorBlock;
     if (this.state.parsingSpecError) {
       packageBody = (
         <div>
@@ -44,15 +44,17 @@ const MainContainer = React.createClass({
           <h3>Error parsing the spec file</h3>
         </div>
       );
-    } else if (this.state.rspecExecutionError) {
-      packageBody = (
+    } else {
+      packageBody = <TestsContainer state={this.state} openPopup={this.openPopup}/>;
+    }
+
+    if (this.state.rspecExecutionError || this.state.rspecExecutionWarning) {
+      executionErrorBlock = (
         <div>
           <h2>Oops, something happened while executing the spec</h2>
           <h3>Error when using RSpec over this file</h3>
         </div>
       );
-    } else {
-      packageBody = <TestsContainer state={this.state} openPopup={this.openPopup}/>;
     }
 
     if (this.state.file.isRubyFile() && this.state.file.isSpecFile()) {
@@ -63,6 +65,7 @@ const MainContainer = React.createClass({
             <PanelHeader fileName={this.state.file.name}/>
             <TestsSummary summary={this.state.summary}/>
             <HintsBlock/>
+            {executionErrorBlock}
             {packageBody}
           </div>
         </div>

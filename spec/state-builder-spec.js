@@ -26,6 +26,7 @@ describe('StateBuilder', () => {
       .withFile({name: 'some_name_spec.rb'})
       .withAsTree(['tree'])
       .withSpecParsingError('error')
+      .withRSpecExecutionWarning('test warning')
       .withRSpecExecutionError('test error')
       .withSummary('summary')
       .loading(true)
@@ -34,6 +35,7 @@ describe('StateBuilder', () => {
     expect(newState.file.name).toBe('some_name_spec.rb');
     expect(newState.asTree).toEqual(['tree']);
     expect(newState.parsingSpecError).toBe('error');
+    expect(newState.rspecExecutionWarning).toBe('test warning');
     expect(newState.rspecExecutionError).toBe('test error');
     expect(newState.summary).toBe('summary');
     expect(newState.loading).toBeTruthy();
@@ -45,6 +47,7 @@ describe('StateBuilder', () => {
     const errorState = sut
       .from(initialState)
       .withSpecParsingError('error')
+      .withRSpecExecutionWarning('test warning')
       .withRSpecExecutionError('test error')
       .build();
 
@@ -53,6 +56,7 @@ describe('StateBuilder', () => {
       .build();
 
     expect(newState.parsingSpecError).not.toBeDefined();
+    expect(newState.rspecExecutionError).not.toBeDefined();
     expect(newState.rspecExecutionError).not.toBeDefined();
   });
 });
