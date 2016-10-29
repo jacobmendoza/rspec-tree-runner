@@ -66,14 +66,14 @@ const LoadingIndicator = React.createClass({
 const TestsContainer = React.createClass({
   render() {
     const loading = this.props.state.loading;
-    const containerStyle = { opacity: (!loading) ? '1' : '0.2' };
+    const containerStyle = (loading) ? 'loading' : ''; // { opacity: (!loading) ? '1' : '0.2' };
     const tree = this.props.state.asTree;
     if (tree.length > 0) {
       const parentNode = tree[0];
       return (
         <div className='tests-runner-container'>
           <LoadingIndicator activated={loading}/>
-          <div style={containerStyle}>
+          <div className={containerStyle}>
             <RecursiveTreeViewWrapper node={parentNode} openPopup={this.props.openPopup}></RecursiveTreeViewWrapper>
           </div>
         </div>
