@@ -6,14 +6,22 @@ import TestsSummary from './tests-summary.jsx';
 import TestsContainer from './tests-container.jsx';
 import HintsBlock from './hints-block.jsx'
 import WrongFile from './wrong-file.jsx';
-
-const PanelHeader = React.createClass({
-  render() {
-    return(<h3 className='tree-view-title'>{this.props.fileName}</h3>)
-  }
-});
+import InformationPopup from './information-popup.jsx';
+import PanelHeader from './panel-header.jsx';
 
 const MainContainer = React.createClass({
+  componentDidMount() {
+    const divElement = document.createElement('div');
+    this.renderedElement = ReactDOM.render(<InformationPopup onCloseDetailWindow={this.closePopup}/>, divElement);
+    this.testDetailsElement = atom.workspace.addModalPanel({item: divElement, visible:false});
+  },
+  closePopup() {
+    this.testDetailsElement.hide();
+  },
+  openPopup(contents) {
+    this.renderedElement.updateContents(contents);
+    this.testDetailsElement.show();
+  },
   getInitialState() {
     return {
       file: {
@@ -44,7 +52,7 @@ const MainContainer = React.createClass({
         </div>
       );
     } else {
-      packageBody = <TestsContainer state={this.state}/>;
+      packageBody = <TestsContainer state={this.state} openPopup={this.openPopup}/>;
     }
 
     if (this.state.file.isRubyFile() && this.state.file.isSpecFile()) {

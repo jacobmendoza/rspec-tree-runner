@@ -45,6 +45,7 @@ describe('StateBuilder', () => {
     const errorState = sut
       .from(initialState)
       .withSpecParsingError('error')
+      .withRSpecExecutionError('test error')
       .build();
 
     const newState = sut
@@ -52,5 +53,6 @@ describe('StateBuilder', () => {
       .build();
 
     expect(newState.parsingSpecError).not.toBeDefined();
+    expect(newState.rspecExecutionError).not.toBeDefined();
   });
 });
