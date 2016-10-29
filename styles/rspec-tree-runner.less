@@ -5,7 +5,6 @@
 @import 'loading-indicator.less';
 
 .rspec-test-details {
-
   h1 { font-size: 20px; }
   button { margin-top: 10px; }
 
@@ -49,8 +48,31 @@
     font-weight: lighter;
   }
 
-  // Tree
+  .executionErrorBlock {
+    .plugin-font-base;
+    text-align: left;
+    font-size:12px;
+    padding:10px 4px;
+    border-bottom: 1px solid #888;
+    color: @text-color-info;
 
+    .warning {   cursor: pointer; cursor: hand; }
+    .error { cursor: pointer; cursor:hand; }
+
+    .warning:before {
+      .plugin-icons-font-base;
+      content: ' \f02d';
+      margin-right: 5px;
+    }
+
+    .error:before {
+      .plugin-icons-font-base;
+      content: ' \f081';
+      margin-right: 5px;
+    }
+  }
+
+  // Tree
   .rspec-tree-runner-view-container {
     width: 210px;
   }

@@ -22,6 +22,18 @@ const MainContainer = React.createClass({
     this.renderedElement.updateContents(contents);
     this.testDetailsElement.show();
   },
+  openRSpecExecutionWarning() {
+    this.openPopup({
+      title: 'Warning executing RSpec',
+      extendedText: this.state.rspecExecutionWarning
+    })
+  },
+  openRSpecExecutionError() {
+    this.openPopup({
+      title: 'Error executing RSpec',
+      extendedText: this.state.rspecExecutionError
+    })
+  },
   getInitialState() {
     return {
       file: {
@@ -48,11 +60,16 @@ const MainContainer = React.createClass({
       packageBody = <TestsContainer state={this.state} openPopup={this.openPopup}/>;
     }
 
-    if (this.state.rspecExecutionError || this.state.rspecExecutionWarning) {
+    if (this.state.rspecExecutionWarning) {
       executionErrorBlock = (
-        <div>
-          <h2>Oops, something happened while executing the spec</h2>
-          <h3>Error when using RSpec over this file</h3>
+        <div className='executionErrorBlock'>
+          <div className='warning' onClick={this.openRSpecExecutionWarning}>View RSpec execution warning</div>
+        </div>
+      );
+    } else if (this.state.rspecExecutionError) {
+      executionErrorBlock = (
+        <div className='executionErrorBlock'>
+          <div className='error' onClick={this.openRSpecExecutionError}>View RSpec execution error</div>
         </div>
       );
     }
