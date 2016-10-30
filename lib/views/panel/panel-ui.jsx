@@ -78,7 +78,7 @@ const MainContainer = React.createClass({
       return (
         <div className="rspec-tree-runner">
           <div className='package-header'>rspec-tree-runner</div>
-          <div className='subContainer'>
+          <div id='subContainer' className='subContainer'>
             <PanelHeader fileName={this.state.file.name}/>
             <TestsSummary summary={this.state.summary}/>
             <HintsBlock/>
