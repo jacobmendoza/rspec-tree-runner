@@ -1,2 +1,2 @@
 os: osx
-script: 'curl -s https://raw.githubusercontent.com/atom/ci/master/build-package.sh | sh && ./node_modules/.bin/xo'
+script: 'curl -s https://raw.githubusercontent.com/atom/ci/master/build-package.sh | sh && ./node_modules/.bin/xo --quiet'
