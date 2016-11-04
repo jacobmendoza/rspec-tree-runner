@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/jacobmendoza/rspec-tree-runner.svg?branch=master)](https://travis-ci.org/jacobmendoza/rspec-tree-runner)
 # rspec-tree-runner for Atom
 
 RSpec-tree-runner is a package for Atom that aims to be a complete test runner for Atom and RSpec.
