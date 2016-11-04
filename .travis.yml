@@ -18,7 +18,6 @@ script:
   - curl -s -O https://raw.githubusercontent.com/atom/ci/master/build-package.sh
   - chmod u+x build-package.sh
   - ./build-package.sh
-  - sh && ./node_modules/.bin/xo --quiet'
 
 notifications:
   email:
