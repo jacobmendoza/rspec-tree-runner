@@ -37,6 +37,7 @@
      "atom"
    ],
    "ignores": [
+     "atom",
      "lib/views/**"
    ],
    "rules": {
