@@ -1,6 +1,6 @@
 {
   "name": "rspec-tree-runner",
-  "main": "./lib/rspec-tree-runner",
+  "main": "./lib/index",
   "version": "0.3.0",
   "description": "RSpec runner and files analyzer for Atom editor",
   "activationCommands": {
@@ -14,6 +14,9 @@
   },
   "dependencies": {
     "atom-space-pen-views": "^2.0.4",
-    "event-kit": "^1.1.0"
+    "event-kit": "^1.1.0",
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2",
+    "react-treeview": "^0.4.5"
   }
 }
