@@ -15,6 +15,12 @@ HotKeys:
 
 To activate the package press ctrl-alt-l.
 
+## Important note about this version
+
+In previous versions and trying to promote the TDD flow, the package used to allow toggling between the test file and the file that hosts the production code, following the Rails convention. That convention dictates the folders where the files should be located.
+
+That feature, coupled the package with Rails, confusing users working in projects that were not using that structure. The feature has been removed simplifying not only the use but also the codebase.
+
 ## How does it work?
 
 rspec-tree-runner relies on Ripper, a Ruby script parser. In this case, we use it to read the spec file and convert it into a symbolic expression tree (a binary tree). When you open a spec file, rspec-tree-runner calls a small Ruby script that generates the expression, and transforms it to a different kind of tree, easier to process in Atom and that contains information specific to a spec file (the kind of block, the line number, the identifier, etc) as opposed to the output of Ripper, which is general to any Ruby script.
