@@ -49,7 +49,7 @@ const RecursiveTreeViewWrapper = React.createClass({
 const LoadingIndicator = React.createClass({
   render() {
     if (this.props.activated) {
-        return(<div className='loader'>Loading...</div>);
+        return(<div className='spinner'>&nbsp;</div>);
     } else {
       return(null);
     }

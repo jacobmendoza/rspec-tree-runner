@@ -2,69 +2,34 @@
 @import 'ui-variables';
 
 @loader-background: darken(#389dd4, 15%);
-@loader-size: 2em;
+@loader-size: 15px;
 
-.loader {
-  font-size: 10px;
-  margin: 8px auto;
-  margin-bottom: 20px;
-  text-indent: -9999em;
+.spinner {
   width: @loader-size;
   height: @loader-size;
-  border-radius: 50%;
-  background: @loader-background;
-  background: -moz-linear-gradient(left, @loader-background 10%, rgba(255, 255, 255, 0) 42%);
-  background: -webkit-linear-gradient(left, @loader-background 10%, rgba(255, 255, 255, 0) 42%);
-  background: -o-linear-gradient(left, @loader-background 10%, rgba(255, 255, 255, 0) 42%);
-  background: -ms-linear-gradient(left, @loader-background 10%, rgba(255, 255, 255, 0) 42%);
-  background: linear-gradient(to right, @loader-background 10%, rgba(255, 255, 255, 0) 42%);
-  position: relative;
-  -webkit-animation: load3 1.4s infinite linear;
-  animation: load3 1.4s infinite linear;
-  -webkit-transform: translateZ(0);
-  -ms-transform: translateZ(0);
-  transform: translateZ(0);
+  margin: 10px auto;
+  background-color: darken(@tab-background-color-active, 50%);
+
+  border-radius: 100%;
+  -webkit-animation: sk-scaleout 1.0s infinite ease-in-out;
+  animation: sk-scaleout 1.0s infinite ease-in-out;
 }
-.loader:before {
-  width: 50%;
-  height: 50%;
-  background: @loader-background;
-  border-radius: 100% 0 0 0;
-  position: absolute;
-  top: 0;
-  left: 0;
-  content: '';
-}
-.loader:after {
-  background: @pane-background-color;
-  width: 75%;
-  height: 75%;
-  border-radius: 50%;
-  content: '';
-  margin: auto;
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-}
-@-webkit-keyframes load3 {
-  0% {
-    -webkit-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
+
+@-webkit-keyframes sk-scaleout {
+  0% { -webkit-transform: scale(0) }
   100% {
-    -webkit-transform: rotate(360deg);
-    transform: rotate(360deg);
+    -webkit-transform: scale(1.0);
+    opacity: 0;
   }
 }
-@keyframes load3 {
+
+@keyframes sk-scaleout {
   0% {
-    -webkit-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(360deg);
-    transform: rotate(360deg);
+    -webkit-transform: scale(0);
+    transform: scale(0);
+  } 100% {
+    -webkit-transform: scale(1.0);
+    transform: scale(1.0);
+    opacity: 0;
   }
 }
