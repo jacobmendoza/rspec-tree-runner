@@ -1,7 +1,7 @@
 {
   "name": "rspec-tree-runner",
   "main": "./lib/index",
-  "version": "0.3.0",
+  "version": "1.0.0",
   "description": "RSpec runner and files analyzer for Atom editor",
   "activationCommands": {
     "atom-workspace": "rspec-tree-runner:toggle",
@@ -13,7 +13,7 @@
     "atom": ">=0.174.0 <2.0.0"
   },
   "scripts": {
-   "test": "xo --quiet && apm test"
+    "test": "xo --quiet && apm test"
   },
   "dependencies": {
     "react": "^15.3.2",
@@ -24,22 +24,22 @@
     "xo": "*"
   },
   "xo": {
-   "envs": [
-     "browser",
-     "node",
-     "jasmine",
-     "atomtest"
-   ],
-   "esnext": true,
-   "globals": [
-     "atom"
-   ],
-   "ignores": [
-     "atom",
-     "lib/views/**"
-   ],
-   "rules": {
-     "import/no-extraneous-dependencies": 0
-   }
- }
+    "envs": [
+      "browser",
+      "node",
+      "jasmine",
+      "atomtest"
+    ],
+    "esnext": true,
+    "globals": [
+      "atom"
+    ],
+    "ignores": [
+      "atom",
+      "lib/views/**"
+    ],
+    "rules": {
+      "import/no-extraneous-dependencies": 0
+    }
+  }
 }
