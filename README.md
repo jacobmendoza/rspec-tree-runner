@@ -1,20 +1,17 @@
 [![Build Status](https://travis-ci.org/jacobmendoza/rspec-tree-runner.svg?branch=master)](https://travis-ci.org/jacobmendoza/rspec-tree-runner)
 # rspec-tree-runner for Atom
 
-RSpec-tree-runner is a package for Atom that aims to be a complete test runner for Atom and RSpec.
+RSpec-tree-runner is a complete test runner for RSpec integrated in Atom.
 
 <img src="http://jacobmendoza.github.io/rspec-tree-runner/demo.gif?1" width="854" loop=infinite>
 
 This package finds the corresponding tests for your file, displaying the hierarchical structure and allowing you to run them, integrating the results in the editor.
-
-**Important note: This is an early preview, and some features can fail**. The test environment has been OSX. Please, do not hesitate to report bugs and issues. I'll respond as soon as possible.
 
 ## How to use it
 HotKeys:
 - __Ctrl+Alt+L__ - Activate the package
 - __Ctrl+Alt+X__ - Executes all test
 - __Ctrl+Alt+X__ - Executes single test (current line)
-- __Ctrl+Alt+Q__ - Toggles between files and tests
 
 To activate the package press ctrl-alt-l.
 
