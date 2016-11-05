@@ -75,6 +75,23 @@ describe('PluginStateStore', () => {
 			});
 		});
 
+		describe('When no file is specified', () => {
+			beforeEach(() => {
+				editor = {buffer: {file: undefined}};
+				runs(() => sut.set(editor));
+				waitsFor(() => state, 'new state has to be built', 100);
+			});
+
+			it('builds the new state for the editor', () => {
+				runs(() => {
+					expect(state.asTree).toEqual([]);
+					expect(state.summary).not.toBeDefined();
+					expect(state.loading).toBeFalsy();
+					assertErrorsNotDefined(state);
+				});
+			});
+		});
+
 		describe('When spec file provided', () => {
 			beforeEach(() => {
 				editor = {
