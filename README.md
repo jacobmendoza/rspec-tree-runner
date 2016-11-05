@@ -15,19 +15,6 @@ HotKeys:
 
 To activate the package press ctrl-alt-l.
 
-When navigating between files, the package will try to find the spec that corresponds to the current file (the package will look for them in spec and fast_spec folders. These folders can be properly modified in the package configuration). If the spec file is found, the hierarchical structure will be shown. When pressing ctrl-alt-x, RSpec runner will be called and the results will be parsed and shown in the tree.
-
-## Important note
-This software is the first time of too many things. I'm not an expert in almost any of the technologies that are used in this package and although I expect everything to be functional, the project could have important weaknesses and inconsistencies.
-
-I would really love to hear feedback about the features or the code, and I really mean it, no matter if it's something big or just a subtle detail. This feedback would be an important opportunity to learn. The are several areas that will probably need significant improvement:
-
-* Non idiomatic CoffeeScript code, underuse of the features of the language.
-* Poor knowledge of Atom API. Features using more complex code than required.
-* Too complicated LESS code.
-* Areas without appropiate tests.
-* Design issues.
-
 ## How does it work?
 
 rspec-tree-runner relies on Ripper, a Ruby script parser. In this case, we use it to read the spec file and convert it into a symbolic expression tree (a binary tree). When you open a spec file, rspec-tree-runner calls a small Ruby script that generates the expression, and transforms it to a different kind of tree, easier to process in Atom and that contains information specific to a spec file (the kind of block, the line number, the identifier, etc) as opposed to the output of Ripper, which is general to any Ruby script.
