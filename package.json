@@ -1,7 +1,7 @@
 {
   "name": "rspec-tree-runner",
   "main": "./lib/index",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "RSpec runner and files analyzer for Atom editor",
   "activationCommands": {
     "atom-workspace": "rspec-tree-runner:toggle",
@@ -16,11 +16,11 @@
     "test": "xo --quiet && apm test"
   },
   "keywords": [
-   "rspec",
-   "ruby",
-   "rails",
-   "tdd",
-   "testing"
+    "rspec",
+    "ruby",
+    "rails",
+    "tdd",
+    "testing"
   ],
   "dependencies": {
     "react": "^15.3.2",
