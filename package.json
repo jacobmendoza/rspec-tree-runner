@@ -15,6 +15,13 @@
   "scripts": {
     "test": "xo --quiet && apm test"
   },
+  "keywords": [
+   "rspec",
+   "ruby",
+   "rails",
+   "tdd",
+   "testing"
+  ],
   "dependencies": {
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
