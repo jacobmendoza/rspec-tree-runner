@@ -14,6 +14,14 @@ module SpecAnalyzer
       @children << node
     end
 
+    def try_assign_from(expression, exploration_state)
+      try_assign_identifier(expression, exploration_state)
+
+      try_assign_type(expression, exploration_state)
+
+      try_assign_line(expression, exploration_state)
+    end
+
     def to_s
       "#{@identifier} with #{@children.length} children"
     end
@@ -33,6 +41,21 @@ module SpecAnalyzer
 
       hash
     end
+
+    private
+
+    def try_assign_identifier(expression, exploration_state)
+      @identifier = expression if expression.is_a?(String) && exploration_state.assign_identifier?
+    end
+
+    def try_assign_type(expression, exploration_state)
+      @type = expression if @type.nil? && expression.is_a?(String) && exploration_state.assign_type?
+    end
+
+    def try_assign_line(expression, exploration_state)
+      return unless expression.is_a?(Fixnum)
+      @line = expression if @line.nil? && exploration_state.assign_type?
+    end
   end
 
   # Class that represents the current state of the recursion
@@ -41,6 +64,14 @@ module SpecAnalyzer
     def initialize(adding_block_context, adding_identifier)
       @adding_block_context = adding_block_context
       @adding_identifier = adding_identifier
+    end
+
+    def assign_identifier?
+      @adding_block_context && !@adding_identifier
+    end
+
+    def assign_type?
+      @adding_block_context && @adding_identifier
     end
   end
 
@@ -84,29 +115,8 @@ module SpecAnalyzer
 
       exploration_state.adding_identifier = true if expression == :@ident
 
-      assign_identifier expression, exploration_state, current_node
-
-      assign_type expression, exploration_state, current_node
-
-      assign_line expression, exploration_state, current_node
+      current_node.try_assign_from(expression, exploration_state)
     end
-
-    def assign_identifier(expression, exploration_state, current_node)
-      current_node.identifier = expression if expression.is_a?(String) && exploration_state.adding_block_context && !exploration_state.adding_identifier
-    end
-
-    def assign_type(expression, exploration_state, current_node)
-      current_node.type = expression if expression.is_a?(String) && exploration_state.adding_block_context && exploration_state.adding_identifier
-    end
-
-    def assign_line(expression, exploration_state, current_node)
-      if expression.is_a?(Fixnum)
-        if current_node.line.nil? && exploration_state.adding_block_context && exploration_state.adding_identifier
-          current_node.line = expression
-        end
-      end
-    end
-
   end
 end
 
