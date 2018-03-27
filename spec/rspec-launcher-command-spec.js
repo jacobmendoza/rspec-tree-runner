@@ -21,13 +21,21 @@ describe('RSpecLauncherCommand', () => {
 		rspecLauncherCommand = new RSpecLauncherCommand(
 			jsonSanitizer, terminalCommandRunner);
 
-		rspecLauncherCommand.run('somefile');
 		rspecLauncherCommand.parseRSpecResult({stdOutData: '{}', stdErrorData: ''});
 	});
 
-	it('runs the command', () => {
+	it('runs the command on project a', () => {
+		rspecLauncherCommand.run('a/somefile');
+
 		expect(terminalCommandRunner.run)
-			.toHaveBeenCalledWith('rspec --format=json "somefile"', 'a');
+			.toHaveBeenCalledWith('rspec --format=json "a/somefile"', 'a');
+	});
+
+	it('runs the command on project b', () => {
+		rspecLauncherCommand.run('b/somefile');
+
+		expect(terminalCommandRunner.run)
+			.toHaveBeenCalledWith('rspec --format=json "b/somefile"', 'b');
 	});
 
 	it('calls the sanitizer when parsing data', () => {
