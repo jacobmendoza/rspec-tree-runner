@@ -77,7 +77,6 @@ const MainContainer = React.createClass({
 		if (this.state.file.isRubyFile() && this.state.file.isSpecFile()) {
 			return (
 				<div className="rspec-tree-runner">
-					<div className='package-header'>rspec-tree-runner</div>
 					<div id='subContainer' className='subContainer'>
 						<PanelHeader fileName={this.state.file.name}/>
 						<TestsSummary summary={this.state.summary}/>
@@ -91,7 +90,6 @@ const MainContainer = React.createClass({
 		else {
 			return(
 				<div className="rspec-tree-runner">
-					<div className='package-header'>rspec-tree-runner</div>
 					<WrongFile file={this.state.file}/>
 				</div>
 			);
