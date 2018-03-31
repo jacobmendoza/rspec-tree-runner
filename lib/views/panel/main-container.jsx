@@ -48,7 +48,8 @@ const MainContainer = React.createClass({
 		};
 	},
 	render() {
-		let packageBody, executionErrorBlock;
+		let packageBody, executionErrorBlock, mainStructure;
+
 		if (this.state.parsingSpecError) {
 			packageBody = (
 				<div>
@@ -75,25 +76,27 @@ const MainContainer = React.createClass({
 		}
 
 		if (this.state.file.isRubyFile() && this.state.file.isSpecFile()) {
-			return (
-				<div className="rspec-tree-runner">
-					<div id='subContainer' className='subContainer'>
-						<PanelHeader fileName={this.state.file.name}/>
-						<TestsSummary summary={this.state.summary}/>
-						<HintsBlock/>
-						{executionErrorBlock}
-						{packageBody}
-					</div>
-				</div>
+			mainStructure = (
+        <div>
+  				<PanelHeader fileName={this.state.file.name}/>
+  				<TestsSummary summary={this.state.summary}/>
+  				<HintsBlock/>
+  				{executionErrorBlock}
+  				{packageBody}
+        </div>
 			);
 		}
 		else {
-			return(
-				<div className="rspec-tree-runner">
-					<WrongFile file={this.state.file}/>
-				</div>
-			);
+			mainStructure = (<WrongFile file={this.state.file}/>);
 		}
+
+		return (
+			<div className="rspec-tree-runner">
+				<div id='subContainer' className='subContainer'>
+					 {mainStructure}
+				</div>
+			</div>
+		);
 	}
 });
 
