@@ -19,7 +19,7 @@ describe('RSpecLauncherCommand', () => {
 		spyOn(jsonSanitizer, 'extract').andReturn({});
 
 		rspecLauncherCommand = new RSpecLauncherCommand(
-			jsonSanitizer, terminalCommandRunner);
+			jsonSanitizer, () => terminalCommandRunner);
 
 		rspecLauncherCommand.parseRSpecResult({stdOutData: '{}', stdErrorData: ''});
 	});

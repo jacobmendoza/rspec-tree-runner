@@ -12,7 +12,7 @@ describe('RSpecAnalyzerCommand', () => {
 		atom.config.set('rspec-tree-runner.rubyPathCommand', 'ruby');
 		terminalCommandRunner = new TerminalCommandRunner();
 		spyOn(terminalCommandRunner, 'run');
-		command = new RSpecAnalyzerCommand(terminalCommandRunner, fakePath);
+		command = new RSpecAnalyzerCommand(() => terminalCommandRunner, fakePath);
 	});
 
 	describe('If no analyzer path is supplied', () => {
