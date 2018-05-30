@@ -53,7 +53,7 @@ module SpecAnalyzer
     end
 
     def try_assign_line(expression, exploration_state)
-      return unless expression.is_a?(Fixnum)
+      return unless expression.is_a?(Integer)
       @line = expression if @line.nil? && exploration_state.assign_type?
     end
   end
